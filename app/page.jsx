@@ -8,19 +8,21 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const {data:session} = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
 
-  useEffect(()=>{
-      if(session){
-          router.replace('/myfile')
-      };
-  },[session],[router])
+  useEffect(() => {
+    if (session) {
+      router.replace('/myfile')
+    };
+  }, [session], [router])
   return (
     <div>
       <Navbarmain />
-      <Maincontent />
-      <Community/>
+      <div className="my-24 md:my-36">
+        <Maincontent />
+        <Community />
+      </div>
     </div>
   );
 }

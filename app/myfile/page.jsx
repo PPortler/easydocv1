@@ -27,7 +27,7 @@ function MyfilePage() {
 
     async function getUser(email) {
         try {
-            const res = await fetch(`http://localhost:3000/api/user/${email}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/user/${email}`, {
                 method: "GET",
                 cache: "no-store"
             })

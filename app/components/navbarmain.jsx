@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 function Navbarmain() {
   return (
-    <div className='flex justify-between py-4 size-screen items-center bg-[#F5F7FA]'>
+    <div className='fixed top-0 w-full z-10 flex justify-between py-4 size-screen items-center bg-[#F5F7FA]'>
       <Link href="/" className='font-bold text-2xl'>Easy Doc</Link>
       <div className='hidden lg:flex'>
         <Link href="#" className='lg:mx-3 mx-2 text-sm'>Home</Link>

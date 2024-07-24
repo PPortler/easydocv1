@@ -46,7 +46,7 @@ function LoginPage() {
     return (
         <div>
             <Navbarlogin />
-            <div className='my-10 md:my-16 justify-center mx-auto  items-center flex gap-20 '>
+            <div className='my-20 md:my-36 justify-center mx-auto  items-center flex gap-20 '>
                 <div className=' w-10/12 md:w-8/12 lg:w-4/12 flex flex-col justify-between '>
                     <h1 className='text-3xl font-bold'>Login</h1>
                     <p className='text-gray-500 text-xs mt-2'>Login to access your travelwise account</p>

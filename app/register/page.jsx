@@ -41,7 +41,7 @@ function RegisterPage() {
         }
 
         try {
-            const resCheckUser = await fetch("http://localhost:3000/api/checkuser",{
+            const resCheckUser = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/checkuser`,{
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -60,7 +60,7 @@ function RegisterPage() {
                 return;
             }
 
-            const res = await fetch("http://localhost:3000/api/user", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/user`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -79,7 +79,7 @@ function RegisterPage() {
     return (
         <div>
             <Navbarlogin />
-            <div className='my-10 md:my-16 justify-center mx-auto  items-center flex-row-reverse flex gap-20 '>
+            <div className='my-24 md:my-36 justify-center mx-auto  items-center flex-row-reverse flex gap-20 '>
                 <div className=' w-10/12 md:w-8/12 xl:w-4/12 lg:w-5/12 flex flex-col justify-between '>
                     <h1 className='text-3xl font-bold'>Sign Up</h1>
                     <p className='text-gray-500 text-xs mt-2'>Let’s get you create your personal account.</p>
@@ -124,7 +124,7 @@ function RegisterPage() {
                                 <label >I agree to all the <Link href="#" className='text-[#FF8682] hover:underline'>Terms</Link> and <Link href="#" className='text-[#FF8682] hover:underline'>Privacy Policies</Link></label>
                             </div>
                         </div>
-                        <button type='submit' className='w-full mt-8 text-white bg-[#2581C1] p-2 rounded-lg'>Login</button>
+                        <button type='submit' className='w-full mt-8 text-white bg-[#2581C1] p-2 rounded-lg'>Create account</button>
                     </form>
                     <p className='text-center mt-3 text-xs'>Already have an account? <Link href="/login" className='text-[#FF8682] hover:underline'>Login</Link></p>
                     <div className='relative'>
