@@ -4,60 +4,67 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Navbarlogin from '../components/navbarlogin'
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import Loader from '../components/loader'
 
 function LoginPage() {
 
-    const {data:session} = useSession();
+    const [statusLoad, setStatusLoad] = useState(true)
+    useEffect(() => {
+        setStatusLoad(false)
+    }, [])
+
+    const { data: session } = useSession();
     const router = useRouter()
 
-    useEffect(()=>{
-        if(session){
+    useEffect(() => {
+        if (session) {
             router.replace('/myfile')
         };
-    },[session],[router])
+    }, [session], [router])
 
-    const [email,setEmail] = useState('')
-    const [password,setPassword] = useState('')
-    const [error,setError] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
 
-   
-    async function handleSubmit(e){
+
+    async function handleSubmit(e) {
         e.preventDefault();
+        setStatusLoad(true)
 
-        try{
-            const res = await signIn("credentials",{
-                email,password, redirect:false
+        try {
+            const res = await signIn("credentials", {
+                email, password, redirect: false
             })
-
-            if(res.error){
+            if (res.error) {
                 setError("Invalid credentials");
+                setStatusLoad(false)
                 return;
             }
-
+            
             router.replace('/myfile')
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     }
     return (
         <div>
             <Navbarlogin />
-            <div className='my-20 md:my-36 justify-center mx-auto  items-center flex gap-20 '>
+            <div className='size-container justify-center mx-auto  items-center flex gap-20 '>
                 <div className=' w-10/12 md:w-8/12 lg:w-4/12 flex flex-col justify-between '>
                     <h1 className='text-3xl font-bold'>Login</h1>
                     <p className='text-gray-500 text-xs mt-2'>Login to access your travelwise account</p>
                     <form onSubmit={handleSubmit} className='mt-7'>
                         <div className='relative'>
-                            <input onChange={(e)=> setEmail(e.target.value)} className='px-3 w-full border p-2 rounded-md' type="text" placeholder='Enter your email' />
-                            <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{top:"-.5rem"}}>Email</span>
+                            <input onChange={(e) => setEmail(e.target.value)} className='px-3 w-full border p-2 rounded-md' type="text" placeholder='Enter your email' />
+                            <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Email</span>
                         </div>
                         <div className='mt-4 relative'>
-                            <input onChange={(e)=> setPassword(e.target.value)} className='px-3 w-full border p-2 rounded-md' type="password" placeholder='Enter your password' />
-                            <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{top:"-.5rem"}}>Password</span>
+                            <input onChange={(e) => setPassword(e.target.value)} className='px-3 w-full border p-2 rounded-md' type="password" placeholder='Enter your password' />
+                            <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Password</span>
                         </div>
                         {error && (
                             <div className='mt-1 text-xs rounded-md p-1 px-2 text-white bg-red-500 w-fit'>
@@ -71,7 +78,7 @@ function LoginPage() {
                             </div>
                             <Link className='text-[#FF8682] hover:underline' href="/forgot" >Forgot Password ?</Link>
                         </div>
-                        
+
                         <button type='submit' className='w-full mt-8 text-white bg-[#2581C1] p-2 rounded-lg'>Login</button>
                     </form>
                     <p className='text-center mt-3 text-xs'>Don't have an account? <Link href="/register" className='text-[#FF8682] hover:underline'>Sign up</Link></p>
@@ -94,6 +101,9 @@ function LoginPage() {
                     </div>
                 </div>
                 <Image className='hidden lg:block rounded-lg shadow-md h-fit w-96' src="/image/main/poster_login.png" height={1000} width={1000} priority alt="poster-login"></Image>
+            </div>
+            <div id="loader" style={{opacity: statusLoad ? "1" : "0", display: statusLoad ? "":"none"}}>
+                <Loader />
             </div>
         </div>
 

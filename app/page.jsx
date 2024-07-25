@@ -4,12 +4,19 @@ import Navbarmain from "./components/navbarmain";
 import Maincontent from "./components/maincontent";
 import Community from "./components/community";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useRouter } from "next/navigation";
+import Loader from "./components/loader";
 
 export default function Home() {
   const { data: session } = useSession();
   const router = useRouter();
+
+  const [statusLoad, setStatusLoad] = useState(true)
+  useEffect(() => {
+      setStatusLoad(false)
+  }, [])
+
 
   useEffect(() => {
     if (session) {
@@ -19,9 +26,12 @@ export default function Home() {
   return (
     <div>
       <Navbarmain />
-      <div className="my-24 md:my-36">
+      <div className="size-container">
         <Maincontent />
         <Community />
+      </div>
+      <div id="loader" style={{ opacity: statusLoad ? "1" : "0", display: statusLoad ? "" : "none" }}>
+        <Loader />
       </div>
     </div>
   );

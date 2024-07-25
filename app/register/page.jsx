@@ -4,20 +4,27 @@ import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import Navbarlogin from '../components/navbarlogin'
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import Loader from '../components/loader'
 
 function RegisterPage() {
 
-    const {data:session} = useSession();
+    const [statusLoad, setStatusLoad] = useState(true)
+    useEffect(() => {
+        setStatusLoad(false)
+    }, [])
+
+    
+    const { data: session } = useSession();
     const router = useRouter()
 
-    useEffect(()=>{
-        if(session){
+    useEffect(() => {
+        if (session) {
             router.replace('/myfile')
         };
-    },[session],[router])
+    }, [session], [router])
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -27,21 +34,34 @@ function RegisterPage() {
     const [Cpassword, setCpassword] = useState("")
     const [error, setError] = useState("")
 
+    
+
     async function handleSubmit(e) {
         e.preventDefault();
 
+        setStatusLoad(true);
+
         if (!firstName || !lastName || !phone || !email || !password) {
             setError("Please input all");
+            setStatusLoad(false);
             return;
         }
 
-        if(password !== Cpassword){
+        if (password !== Cpassword) {
             setError("Password don't match");
+            setStatusLoad(false);
+            return;
+        }
+
+        const check_agree = document.getElementById('check_agree');
+        if (!check_agree.checked) {
+            setError("you don't agree condision in easydoc");
+            setStatusLoad(false);
             return;
         }
 
         try {
-            const resCheckUser = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/checkuser`,{
+            const resCheckUser = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/checkuser`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -49,13 +69,15 @@ function RegisterPage() {
                 body: JSON.stringify({ email })
             })
 
-            if(!resCheckUser.ok){
+            if (!resCheckUser.ok) {
+                setStatusLoad(false);
                 throw new Error("Error fetch api checkuser.")
             }
 
             const { user } = await resCheckUser.json()
 
-            if(user){
+            if (user) {
+                setStatusLoad(false);
                 setError("User already exists!")
                 return;
             }
@@ -72,6 +94,7 @@ function RegisterPage() {
                 router.push('/login');
             }
         } catch (err) {
+            setStatusLoad(false);
             console.log("Error Fetch Api in register: ", err)
         }
     }
@@ -79,7 +102,7 @@ function RegisterPage() {
     return (
         <div>
             <Navbarlogin />
-            <div className='my-24 md:my-36 justify-center mx-auto  items-center flex-row-reverse flex gap-20 '>
+            <div className='size-container justify-center mx-auto  items-center flex-row-reverse flex gap-20 '>
                 <div className=' w-10/12 md:w-8/12 xl:w-4/12 lg:w-5/12 flex flex-col justify-between '>
                     <h1 className='text-3xl font-bold'>Sign Up</h1>
                     <p className='text-gray-500 text-xs mt-2'>Let’s get you create your personal account.</p>
@@ -120,7 +143,7 @@ function RegisterPage() {
                         )}
                         <div className='mt-4 flex  text-xs justify-between'>
                             <div className='flex gap-1'>
-                                <input className=' border border-black' type="checkbox" />
+                                <input id="check_agree" className=' border border-black' type="checkbox" />
                                 <label >I agree to all the <Link href="#" className='text-[#FF8682] hover:underline'>Terms</Link> and <Link href="#" className='text-[#FF8682] hover:underline'>Privacy Policies</Link></label>
                             </div>
                         </div>
@@ -146,6 +169,9 @@ function RegisterPage() {
                     </div>
                 </div>
                 <Image className='hidden lg:block rounded-lg shadow-md h-fit w-96' src="/image/main/poster_register.png" height={1000} width={1000} priority alt="poster-login"></Image>
+            </div>
+            <div id="loader" style={{ opacity: statusLoad ? "1" : "0", display: statusLoad ? "" : "none" }}>
+                <Loader />
             </div>
         </div>
 

@@ -8,12 +8,21 @@
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 }
-
+.no_scroll{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow: hidden;
+}
 @layer components{
   .box-main{
     @apply flex flex-col rounded-md p-5 text-center shadow-md justify-center items-center
   }
   .size-screen{
     @apply px-5 md:px-10 lg:px-20 xl:px-36
+  }
+  .size-container{
+    @apply my-20 md:my-36
   }
 }
