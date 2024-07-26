@@ -1,0 +1,34 @@
+.btn_toggle{
+    border-radius: 50%;
+    background-color: #0F75BC;
+    position: relative;
+}
+.line{
+    position: absolute;
+    background-color: white;
+    width: 60%;
+    height: 2px;
+    top: 35%;
+    transform: translate(-50%,-50%);
+}
+.second_line{
+    top: 50%;
+}
+.third_line{
+    top: 65%;
+}
+
+.slider_myfile{
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    transition: .5s ease;
+    max-width: 14rem;
+}
+.input_slider:checked ~ .slider_myfile{
+    transform: translateX(0);
+}
+.input_slider{
+    display: none;
+}
