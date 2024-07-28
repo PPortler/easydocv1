@@ -26,7 +26,7 @@ function MyfilePage() {
         if (!session) {
             router.replace('/login')
         };
-    }, [session], [router])
+    }, [session])
 
     const [dataUser, setDataUser] = useState();
 
@@ -34,6 +34,7 @@ function MyfilePage() {
         if (session?.user?.email) {
             getUser(session?.user?.email);
         }
+        
 
     }, [])
 
@@ -61,21 +62,20 @@ function MyfilePage() {
     useEffect(() => {
         if (showAdd) {
             document.body.classList.add('no_scroll')
+
         } else {
             document.body.classList.remove('no_scroll')
-
         }
     }, [showAdd])
+
+    function handlecancel(){
+        document.getElementById('showUpload').classList.add('hidden')
+        setShowAdd(false)
+    }
     function handleShowAdd() {
+        document.getElementById('showUpload').classList.remove('hidden')
         setShowAdd(prev => !prev);
-        console.log(showAdd);
     }
-
-    function cancelAdd() {
-        setShowAdd(false);
-    }
-
-
 
     return (
         <div>
@@ -219,7 +219,7 @@ function MyfilePage() {
             </div>
             <div style={{ display: showAdd ? "block" : "none" }}>
                 <Addfile
-                    cancel={cancelAdd}
+                    cancel={handlecancel}
                 />
             </div>
             <div id="loader" style={{ opacity: statusLoad ? "1" : "0", display: statusLoad ? "" : "none" }}>

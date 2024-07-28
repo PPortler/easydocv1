@@ -126,9 +126,9 @@ function Admin() {
 
                 </div>
             </div>
-            <div id="loader" style={{ opacity: statusLoad ? "1" : "0", display: statusLoad ? "" : "none" }}>
+            <div id="loader" style={{opacity: statusLoad ? "1" : "0", display: statusLoad ? "":"none"}}>
                 <Loader />
-            </div>
+            </div> 
 
             {showConfirm ? (
                 <>
