@@ -93,7 +93,7 @@ function Admin() {
                         <h1 className='my-3 font-bold text-black'>All Users in Easy Doc</h1>
                         <Link href="#" className='text-sm text-[#2581C1] hover:underline'>view more ({dataUser.length})</Link>
                     </div>
-                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1  overflow-y-scroll h-96 shadow-inner'>
+                    <div className='relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1  overflow-y-scroll h-96 shadow-inner'>
                         {dataUser.length > 0 ? (
                             dataUser.map((user, index) => (
                                 <div key={index} className=' flex flex-col lg:flex-row lg:items-center lg:justify-between border rounded-md p-5'>
@@ -117,8 +117,8 @@ function Admin() {
                             ))
                         ) : (
 
-                            <div className='p-3'>
-                                <p className='bg-red-500 w-fit p-2 text-xs text-white rounded-md'>Not User in easy doc.</p>
+                            <div className='p-3 rounded-md bg-gray-100 absolute top-0 left-0 w-full h-full flex justify-center items-center'>
+                                <p className=' w-fit p-2 text-xsrounded-md'>Not User in easy doc.</p>
                             </div>
                         )}
 

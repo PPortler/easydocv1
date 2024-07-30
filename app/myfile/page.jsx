@@ -28,15 +28,37 @@ function MyfilePage() {
         };
     }, [session])
 
-    const [dataUser, setDataUser] = useState();
+    const [dataUser, setDataUser] = useState([]);
+    const [myFile, setMyFile] = useState([]);
+
 
     useEffect(() => {
         if (session?.user?.email) {
             getUser(session?.user?.email);
+            getFile(session?.user?.email);
         }
         
 
     }, [])
+
+    async function getFile(email) {
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/upload/${email}`, {
+                method: "GET",
+                cache: "no-store"
+            })
+
+            if (!res.ok) {
+                throw new Error("Error get data from api")
+            }
+
+            const data = await res.json();
+            setMyFile(data.myfile);
+
+        } catch (err) {
+            console.log("Error fetch api myfilePage", err);
+        }
+    }
 
     async function getUser(email) {
         try {
@@ -76,7 +98,7 @@ function MyfilePage() {
         document.getElementById('showUpload').classList.remove('hidden')
         setShowAdd(prev => !prev);
     }
-
+    console.log(myFile);
     return (
         <div>
             <div className='md:flex'>
@@ -89,6 +111,7 @@ function MyfilePage() {
                         <Image className='hover:cursor-pointer h-5 w-5' src="/image/myfile/notification.png" height={1000} width={1000} alt="icon" priority />
                         <Image className='hover:cursor-pointer h-5 w-5' src="/image/myfile/settings.png" height={1000} width={1000} alt="icon" priority />
                         <Image className='hover:cursor-pointer h-5 w-5' src="/image/myfile/user.png" height={1000} width={1000} alt="icon" priority />
+
                         <button onClick={() => signOut()} className='p-1 shadow-md px-3 bg-red-500 text-white rounded-lg'>Logout</button>
                     </div>
                     <hr className='my-3 bg-black ' />
@@ -114,97 +137,20 @@ function MyfilePage() {
                         <h1 className='font-bold '>Folders</h1>
                         <div className='mt-3 relative '>
                             <div className=' grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3'>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
-                                <Link href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                    <div className='flex gap-3 items-center'>
-                                        <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                        <p>Colab Notebook</p>
-                                    </div>
-                                    <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                </Link>
+                                {myFile.length > 0 ?(
+                                    myFile.map((d,index)=>(
+                                        <Link key={index} href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
+                                        <div className='flex gap-3 items-center'>
+                                            <Image className='w-6 h-6' src={d.fileURL} height={1000} width={1000} priority alt="icon"></Image>
+                                            <p>{d.fileName}</p>
+                                        </div>
+                                        <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                    </Link>
+                                    ))
+                                ):(
+                                    <div className='text-sm '>not file...</div>
+                                )}
+                                
 
                             </div>
                         </div>
@@ -220,6 +166,7 @@ function MyfilePage() {
             <div style={{ display: showAdd ? "block" : "none" }}>
                 <Addfile
                     cancel={handlecancel}
+                    setShowAdd={setShowAdd}
                 />
             </div>
             <div id="loader" style={{ opacity: statusLoad ? "1" : "0", display: statusLoad ? "" : "none" }}>
