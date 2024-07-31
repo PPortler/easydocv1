@@ -6,8 +6,9 @@ import Link from 'next/link'
 import style from './styles/navbar.module.css'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
+import { signOut } from 'next-auth/react'
 
-function Navbar() {
+function Navbar({ data }) {
 
   const [checkSlider, setCheckSlider] = useState(false);
 
@@ -28,15 +29,24 @@ function Navbar() {
   return (
     <div className='w-fit z-10 shadow-lg'>
       <input id="checkSlider" type="checkbox" className={`${style.input_slider}`} />
-      <div className='hidden  md:block bg-[#080325] pt-10 h-screen'>
+      <div className='hidden  lg:block bg-[#080325] h-screen'>
         <div className='p-3'>
           <div onClick={handleSlider} className={`bg-[#0F75BC] rounded-full p-3 hover:cursor-pointer`}>
             <Image className=' w-6 h-5 ' src="/image/myfile/menu.png" width={1000} height={1000} alt="icon"></Image>
           </div>
         </div>
         <div className='mt-5 flex flex-col items-center '>
+          <Link href="#" className=' transition-colors w-full flex justify-center p-3 py-4'>
+            <Image className=' w-6 h-6 ' src="/image/myfile/user.png" width={1000} height={1000} alt="icon"></Image>
+          </Link>
+          <Link href="#" className='hover:bg-[#0F75BC] transition-colors w-full flex justify-center p-3 py-4'>
+            <Image className=' w-6 h-6 ' src="/image/myfile/admin_white.png" width={1000} height={1000} alt="icon"></Image>
+          </Link>
           <Link href="#" className='hover:bg-[#0F75BC] transition-colors w-full flex justify-center p-3 py-4'>
             <Image className=' w-6 h-6 ' src="/image/myfile/gallery.png" width={1000} height={1000} alt="icon"></Image>
+          </Link>
+          {/* <Link href="#" className='hover:bg-[#0F75BC] transition-colors w-full flex justify-center p-3 py-4'>
+            <Image className=' w-6 h-6 ' src="/image/myfile/notification_white.png" width={1000} height={1000} alt="icon"></Image>
           </Link>
           <Link href="#" className='hover:bg-[#0F75BC] transition-colors w-full flex justify-center p-3 py-4'>
             <Image className=' w-6 h-6 ' src="/image/myfile/status.png" width={1000} height={1000} alt="icon"></Image>
@@ -49,25 +59,40 @@ function Navbar() {
           </Link>
           <Link href="#" className='hover:bg-[#0F75BC] transition-colors w-full flex justify-center p-3 py-4'>
             <Image className=' w-6 h-6 ' src="/image/myfile/blogger.png" width={1000} height={1000} alt="icon"></Image>
-          </Link>
+          </Link> */}
           <Link href="#" className='hover:bg-[#0F75BC] transition-colors w-full flex justify-center p-3 py-4'>
             <Image className=' w-6 h-6 ' src="/image/myfile/settings_white.png" width={1000} height={1000} alt="icon"></Image>
+          </Link>
+          <Link href="#" className='hover:bg-red-500 transition-colors w-full flex justify-center p-3 py-4'>
+            <Image className=' w-6 h-6 ' src="/image/myfile/logout.png" width={1000} height={1000} alt="icon"></Image>
           </Link>
         </div>
 
       </div>
-      <div className={`${style.slider_myfile} z-50 text-white bg-[#080325] pt-10 h-screen`}>
+      <div className={`${style.slider_myfile} z-50 text-white bg-[#080325] overflow-y-scroll h-screen`}>
 
-        <div className='flex items-center text-2xl font-bold  p-3 gap-5'>
-          <h1 >Easy Doc</h1>
-          <div onClick={handleSlider} className={`${style.btn_toggle} p-3 hover:cursor-pointer`}>
+        <div className=' flex items-center text-2xl font-bold  p-5 gap-5'>
+          <Link href="/myfile" >Easy Doc</Link>
+          <div onClick={handleSlider} className={`${style.btn_toggle}  p-3 hover:cursor-pointer`}>
             <Image className=' w-5 h-5 ' src="/image/myfile/close.png" width={1000} height={1000} alt="icon"></Image>
           </div>
         </div>
-        <div className='mt-5 flex flex-col items-center '>
+        <div className=' flex flex-col items-center '>
+          <Link href="#" className=' transition-colors w-full flex p-5 py-4 gap-3'>
+            <Image className=' w-6 h-6 ' src="/image/myfile/user.png" width={1000} height={1000} alt="icon"></Image>
+            <p>{data.firstName} {data.lastName}</p>
+          </Link>
+          <Link href="/admin" className=' hover:bg-[#0F75BC] transition-colors w-full flex p-5 py-4 gap-3'>
+            <Image className=' w-6 h-6 ' src="/image/myfile/admin_white.png" width={1000} height={1000} alt="icon"></Image>
+            <p>Admin mode</p>
+          </Link>
           <Link href="#" className=' hover:bg-[#0F75BC] transition-colors w-full flex p-5 py-4 gap-3'>
             <Image className=' w-6 h-6 ' src="/image/myfile/gallery.png" width={1000} height={1000} alt="icon"></Image>
             <p>My File</p>
+          </Link>
+          {/* <Link href="#" className=' hover:bg-[#0F75BC] transition-colors w-full flex p-5 py-4 gap-3'>
+            <Image className=' w-6 h-6 ' src="/image/myfile/notification_white.png" width={1000} height={1000} alt="icon"></Image>
+            <p>Notification</p>
           </Link>
           <Link href="#" className=' hover:bg-[#0F75BC] transition-colors w-full flex p-5 py-4 gap-3'>
             <Image className=' w-6 h-6 ' src="/image/myfile/status.png" width={1000} height={1000} alt="icon"></Image>
@@ -84,17 +109,22 @@ function Navbar() {
           <Link href="#" className=' hover:bg-[#0F75BC] transition-colors w-full flex p-5 py-4 gap-3'>
             <Image className=' w-6 h-6 ' src="/image/myfile/blogger.png" width={1000} height={1000} alt="icon"></Image>
             <p>Blog</p>
-          </Link>
+          </Link> */}
           <Link href="#" className=' hover:bg-[#0F75BC] transition-colors w-full flex p-5 py-4 gap-3'>
             <Image className=' w-6 h-6 ' src="/image/myfile/settings_white.png" width={1000} height={1000} alt="icon"></Image>
             <p>Setting</p>
           </Link>
+          <button onClick={() => signOut()} className=' hover:bg-red-500 transition-colors w-full flex p-5 py-4 gap-3'>
+            <Image className=' w-6 h-6 ' src="/image/myfile/logout.png" width={1000} height={1000} alt="icon"></Image>
+            <p>Logout</p>
+          </button>
 
         </div>
 
+
       </div>
-      <div onClick={handleSlider} className={`bg-[#0F75BC] md:hidden rounded-e-full  fixed top-2/4 left-0 p-1 py-2 z-10 hover:cursor-pointer`}>
-          <Image className=' w-5 h-5 ' src="/image/myfile/nextarrow.png" width={1000} height={1000} alt="icon"></Image>
+      <div onClick={handleSlider} className={`bg-[#0F75BC] lg:hidden rounded-e-full  fixed top-2/4 left-0 p-1 py-2 z-10 hover:cursor-pointer`}>
+        <Image className=' w-5 h-5 ' src="/image/myfile/nextarrow.png" width={1000} height={1000} alt="icon"></Image>
       </div>
 
       <div onClick={handleSlider} style={{ display: checkSlider ? "block" : "none" }}>

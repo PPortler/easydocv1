@@ -6,6 +6,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from '../firebaseConfig';
 import { useSession } from 'next-auth/react';
 import Loader from './loader';
+import Alert from './alert';
 
 function Addfile({ cancel, setShowAdd }) {
 
@@ -13,7 +14,10 @@ function Addfile({ cancel, setShowAdd }) {
 
   const [File, setFile] = useState(null);
   const [ImageFile, setImageFile] = useState('')
+  const [notFile, setNotFile] = useState(false)
   const inputFileRef = useRef(null);
+
+  const [statusAlert, setStatusAlert] = useState(false);
 
   const [progress, setProgress] = useState(0);
   const [fileURL, setFileURL] = useState(null)
@@ -34,8 +38,10 @@ function Addfile({ cancel, setShowAdd }) {
   }
 
   function handleFile(e) {
+
     setFile(e.target.files[0])
     const files = e.target.files[0];
+    if(!files) return;
     const type = files.name.split('.').pop();
     if (files) {
       setImageFile(URL.createObjectURL(files));
@@ -44,10 +50,16 @@ function Addfile({ cancel, setShowAdd }) {
     }
   }
 
+  useEffect(() => {
+    if (File) {
+      setNotFile(false);
+    }
+  }, [File], [notFile])
+
   function handleUpload() {
     setStatusLoad(true);
 
-    if (!File) return;
+    if (!File) return setStatusLoad(false), setNotFile(true);
 
     const storageRef = ref(storage, `${session?.user?.email}/files/${File.name}`);
     const uploadTask = uploadBytesResumable(storageRef, File);
@@ -63,26 +75,28 @@ function Addfile({ cancel, setShowAdd }) {
         console.log("upload failed!", err);
       },
       async () => {
-          try {
-            getDownloadURL(uploadTask.snapshot.ref).then((fileURL) => {
-              setFileURL(fileURL);
-              sendFiletoDB(fileURL);
-            })
-        
-          } catch (err) {
-            alert("Failed to get URL!")
-            setStatusLoad(false);
-          }
+        try {
+          getDownloadURL(uploadTask.snapshot.ref).then((fileURL) => {
+            setFileURL(fileURL);
+            sendFiletoDB(fileURL);
+          })
+
+        } catch (err) {
+          alert("Failed to get URL!")
+          setStatusLoad(false);
         }
+      }
     )
-    
+
 
   }
 
 
 
   async function sendFiletoDB(url) {
-    if (!url) return;
+
+    if (!url) return setStatusLoad(false);
+
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/upload/${session?.user?.email}`, {
         method: "POST",
@@ -92,23 +106,23 @@ function Addfile({ cancel, setShowAdd }) {
         body: JSON.stringify({ fileName: File.name, fileURL: url, fileType: fileType })
       })
       if (res.ok) {
-        setStatusLoad(false)
         setShowAdd(false)
         setImageFile('')
         setProgress(0)
         setFile(null)
-        alert("upload completed.")
+        setStatusLoad(false)
+        alert(`${File.name} has been uploaded`)
+        window.location.reload();
       }
-    
+
     } catch (err) {
-      
       console.log(err);
+      setStatusLoad(false);
     }
   }
-
   function clearFile() {
     setImageFile('');
-    setFile(null)
+    setFile(null);
   }
 
 
@@ -120,22 +134,56 @@ function Addfile({ cancel, setShowAdd }) {
           <div className='bg-white rounded-lg p-4'>
             <h1 className='font-bold text-lg'>File Upload</h1>
             <hr className='my-3' />
-            <div id="addfileArea" className='relative hover:cursor-pointer hover:bg-gray-200 transition-colors border-2 rounded-md border-[#0F75BC] flex flex-col text-center items-center gap-3 p-10 border-dotted '>
+            <div id="addfileArea" className={`relative hover:cursor-pointer hover:bg-gray-200 transition-colors border-2 rounded-md ${notFile ? "border-red-500" : "border-[#0F75BC]"}  flex flex-col text-center items-center gap-3 p-10 border-dotted `}>
               <input type="file" ref={inputFileRef} onChange={handleFile} id="input_file" hidden />
 
               {File ? (
-                <>
-                  <Image className='w-24 h-24' src={ImageFile || '/image/myfile/documents.png'} height={1000} width={1000} priority alt="upload"></Image>
-                  <p>Upload: {File.name}</p>
-                  <p>{progress} %</p>
-                  <Image onClick={clearFile} className='hover:cursor-pointer absolute top-0 right-0 m-3 w-6 h-6' src="/image/myfile/close_black.png" height={1000} width={1000} priority alt="upload"></Image>
-                </>
+                fileType === 'pdf' ? (
+                  <>
+                    <Image className='w-24 h-24' src={'/image/myfile/pdf.png'} height={1000} width={1000} priority alt="upload"></Image>
+                    <p>Upload: {File.name}</p>
+                    <p>{progress} %</p>
+                    <Image onClick={clearFile} className='hover:cursor-pointer absolute top-0 right-0 m-3 w-6 h-6' src="/image/myfile/close_black.png" height={1000} width={1000} priority alt="upload"></Image>
+                  </>
+                ) : fileType === 'docx' ? (
+                  <>
+                    <Image className='w-24 h-24' src={'/image/myfile/doc.png'} height={1000} width={1000} priority alt="upload"></Image>
+                    <p>Upload: {File.name}</p>
+                    <p>{progress} %</p>
+                    <Image onClick={clearFile} className='hover:cursor-pointer absolute top-0 right-0 m-3 w-6 h-6' src="/image/myfile/close_black.png" height={1000} width={1000} priority alt="upload"></Image>
+                  </>
+                ) : fileType === 'xlsx' ? (
+                  <>
+                    <Image className='w-24 h-24' src={'/image/myfile/xlsx.png'} height={1000} width={1000} priority alt="upload"></Image>
+                    <p>{File.name}</p>
+                    <p>{progress} %</p>
+                    <Image onClick={clearFile} className='hover:cursor-pointer absolute top-0 right-0 m-3 w-6 h-6' src="/image/myfile/close_black.png" height={1000} width={1000} priority alt="upload"></Image>
+                  </>
+                ) : fileType === 'zip' || fileType === 'rar' ? (
+                  <>
+                    <Image className='w-24 h-24' src={'/image/myfile/zip.png'} height={1000} width={1000} priority alt="upload"></Image>
+                    <p>Upload: {File.name}</p>
+                    <p>{progress} %</p>
+                    <Image onClick={clearFile} className='hover:cursor-pointer absolute top-0 right-0 m-3 w-6 h-6' src="/image/myfile/close_black.png" height={1000} width={1000} priority alt="upload"></Image>
+                  </>
+                ) : (
+                  <>
+                    <Image className='w-24 h-24' src={ImageFile || '/image/myfile/documents.png'} height={1000} width={1000} priority alt="upload"></Image>
+                    <p>Upload: {File.name}</p>
+                    <p>{progress} %</p>
+                    <Image onClick={clearFile} className='hover:cursor-pointer absolute top-0 right-0 m-3 w-6 h-6' src="/image/myfile/close_black.png" height={1000} width={1000} priority alt="upload"></Image>
+                  </>
+                )
               ) : (
                 <>
                   <Image className='w-24 h-24' src="/image/myfile/cloud-computing.png" height={1000} width={1000} priority alt="upload"></Image>
                   <p className='text-gray-500'>Drop file or click <br /> for upload to your driver.</p>
+                  {notFile && (
+                    <p className='text-red-500'>*Please input yout file.</p>
+                  )}
                 </>
-              )}
+              )
+              }
             </div>
             <div className='mt-5 flex justify-end gap-3'>
               <button onClick={cancel} className='rounded-lg p-2 px-3 bg-white border border-gray-200 text-black'>Cancel</button>
@@ -148,6 +196,12 @@ function Addfile({ cancel, setShowAdd }) {
       <div id="loader" style={{ opacity: statusLoad ? "1" : "0", display: statusLoad ? "" : "none" }}>
         <Loader />
       </div>
+
+      {File && (
+        <div id="alert" style={{ display: statusAlert ? "" : "none" }}>
+          <Alert fileName={File.name} setStatusAlert={setStatusAlert} />
+        </div>
+      )}
     </>
   )
 }
