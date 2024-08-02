@@ -203,7 +203,7 @@ function MyfilePage() {
                                         )
                                     ))
                                 ) : (
-                                    <div className='text-sm '>not file...</div>
+                                    <div className='text-sm text-gray-400'>Press plus to add your files.</div>
                                 )}
 
 

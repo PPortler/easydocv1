@@ -80,7 +80,7 @@ function Navbar({ data }) {
         <div className=' flex flex-col items-center '>
           <Link href="#" className=' transition-colors w-full flex p-5 py-4 gap-3'>
             <Image className=' w-6 h-6 ' src="/image/myfile/user.png" width={1000} height={1000} alt="icon"></Image>
-            <p>{data.firstName} {data.lastName}</p>
+            <p className='text-ellipsis overflow-hidden whitespace-nowrap'>{data.firstName} {data.lastName}</p>
           </Link>
           <Link href="/admin" className=' hover:bg-[#0F75BC] transition-colors w-full flex p-5 py-4 gap-3'>
             <Image className=' w-6 h-6 ' src="/image/myfile/admin_white.png" width={1000} height={1000} alt="icon"></Image>

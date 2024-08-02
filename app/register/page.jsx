@@ -91,6 +91,7 @@ function RegisterPage() {
             })
 
             if (res.ok) {
+                alert("Register success")
                 router.push('/login');
             }
         } catch (err) {
