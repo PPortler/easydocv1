@@ -85,7 +85,6 @@ function Admin() {
     return (
         <div>
             <NavbarAdmin />
-
             <div className='size-screen size-container '>
 
                 <div className='border rounded-md p-5 shadow-md '>
@@ -98,7 +97,7 @@ function Admin() {
                             dataUser.map((user, index) => (
                                 <div key={index} className=' flex flex-col lg:flex-row lg:items-center lg:justify-between border rounded-md p-5'>
                                     <div className=' lg:flex lg:gap-10 w-full flex gap-5 lg:items-center'>
-                                        <Image src="/image/main/postermain.png" height={1000}
+                                        <Image src="/image/myfile/user.png" height={1000}
                                             className='w-10 h-10 rounded-full ' width={1000} priority alt="profile"></Image>
                                         <div className='overflow-hidden w-full grid grid-cols-2 gap-3 lg:grid-cols-4 lg:pe-20'>
                                             <p className='font-bold '>Email: <br /> <span className='font-thin block overflow-hidden max-w-sx whitespace-nowrap text-ellipsis'>{user.email}</span></p>

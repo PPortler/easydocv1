@@ -30,6 +30,8 @@ function MyfilePage() {
     const [dataUser, setDataUser] = useState([]);
     const [myFile, setMyFile] = useState([]);
 
+    const [styleMenu, setStyleMenu] = useState('span')
+
 
     useEffect(() => {
         if (session?.user?.email) {
@@ -92,7 +94,7 @@ function MyfilePage() {
     function handlecancel() {
         document.getElementById('showUpload').classList.add('hidden')
         setShowAdd(false)
-        
+
     }
     function handleShowAdd() {
         document.getElementById('showUpload').classList.remove('hidden')
@@ -100,8 +102,9 @@ function MyfilePage() {
     }
     return (
         <div>
-            <div className='md:flex'>
-                <Navbar data={dataUser} />
+            <Navbar data={dataUser} />
+            <div className='md:flex lg:ms-16'>
+
                 <div className='w-screen text-black '>
                     <div className='justify-end items-center gap-3 px-5 mt-5 flex'>
                         <Link href="/admin">
@@ -120,60 +123,82 @@ function MyfilePage() {
                             </button>
                         </div>
                         <div className='flex  items-center gap-3'>
-                            <div className='flex justify-center items-center gap-2'>
+                            <div className='hidden lg:flex justify-center items-center gap-2'>
                                 <Image className='w-3 h-3' src="/image/myfile/down-arrow.png" height={1000} width={1000} priority alt="icon"></Image>
                                 <p>Last modified by me</p>
                                 <Image className='w-3 h-3' src="/image/myfile/down.png" height={1000} width={1000} priority alt="icon"></Image>
                             </div>
+                            <div className='flex'>
+                                <div className={`p-1  hover:cursor-pointer ${styleMenu === 'block' ? "bg-gray-300 rounded-md" : ""}`} onClick={() => setStyleMenu('block')}>
+                                    <Image className='w-6 h-6 ' src="/image/myfile/block.png" height={1000} width={1000} priority alt="icon"></Image>
+                                </div>
+                                <div className={`p-1  hover:cursor-pointer ${styleMenu === 'span' ? "bg-gray-300 rounded-md" : ""}`} onClick={() => setStyleMenu('span')}>
+                                    <Image className='w-6 h-6 ' src="/image/myfile/span.png" height={1000} width={1000} priority alt="icon"></Image>
+                                </div>
+                            </div>
                             <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-
                         </div>
                     </div>
                     <div className='z-0 my-5 relative mx-5 p-5 flex flex-col shadow-md border border-gray-200 rounded-lg'>
                         <h1 className='font-bold '>Folders</h1>
                         <div className='mt-3 relative '>
-                            <div className=' grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3'>
+                            <div className={`${styleMenu === 'block' ? "grid-cols-2 xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3" : "grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2"} grid    gap-3`}>
                                 {myFile.length > 0 ? (
                                     myFile.map((d, index) => (
                                         d.fileType === 'pdf' ? (
-                                            <Link key={index} href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                                <div className='flex gap-3 items-center'>
-                                                    <Image className='w-6 h-6' src="/image/myfile/pdf.png" height={1000} width={1000} priority alt="icon"></Image>
-                                                    <p className='whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
+                                            <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
+                                                <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
+                                                    <Image className={`${styleMenu === 'block' ? "w-14 h-14" : "w-6 h-6"} `} src="/image/myfile/pdf.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    <div className='flex items-center w-full justify-center  '>
+                                                        <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
+                                                        <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    </div>
                                                 </div>
-                                                <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                <Image className={`${styleMenu === 'block' ? "hidden" : ""} w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
                                             </Link>
                                         ) : d.fileType === 'docx' ? (
-                                            <Link key={index} href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                                <div className='flex gap-3 items-center'>
-                                                    <Image className='w-6 h-6' src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
-                                                    <p className='whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
+                                            <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
+                                                <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
+                                                    <Image className={`${styleMenu === 'block' ? "w-14 h-14" : "w-6 h-6"} `} src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    <div className='flex items-center w-full justify-center  '>
+                                                        <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
+                                                        <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    </div>
                                                 </div>
-                                                <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                <Image className={`${styleMenu === 'block' ? "hidden" : ""} w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
                                             </Link>
                                         ) : d.fileType === 'xlsx' ? (
-                                            <Link key={index} href="#" className=' shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                                <div className='flex gap-3 items-center'>
-                                                    <Image className='w-6 h-6' src="/image/myfile/xlsx.png" height={1000} width={1000} priority alt="icon"></Image>
-                                                    <p className='whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
+                                            <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
+                                                <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
+                                                    <Image className={`${styleMenu === 'block' ? "w-14 h-14" : "w-6 h-6"} `} src="/image/myfile/xlsx.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    <div className='flex items-center w-full justify-center  '>
+                                                        <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
+                                                        <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    </div>
                                                 </div>
-                                                <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                <Image className={`${styleMenu === 'block' ? "hidden" : ""} w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
                                             </Link>
                                         ) : d.fileType === 'zip' || d.fileType === 'rar' ? (
-                                            <Link key={index} href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                                <div className='flex gap-3 items-center'>
-                                                    <Image className='w-6 h-6' src="/image/myfile/zip.png" height={1000} width={1000} priority alt="icon"></Image>
-                                                    <p className='whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
+                                            <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
+                                                <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
+                                                    <Image className={`${styleMenu === 'block' ? "w-14 h-14" : "w-6 h-6"} `} src="/image/myfile/zip.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    <div className='flex items-center w-full justify-center  '>
+                                                        <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
+                                                        <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    </div>
                                                 </div>
-                                                <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                <Image className={`${styleMenu === 'block' ? "hidden" : ""} w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
                                             </Link>
                                         ) : (
-                                            <Link key={index} href="#" className='shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3'>
-                                                <div className='flex gap-3 items-center'>
-                                                    <Image className='w-6 h-6' src={d.fileURL} height={1000} width={1000} priority alt="icon"></Image>
-                                                    <p className='whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
+                                            <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
+                                                <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
+                                                    <Image className={`${styleMenu === 'block' ? "w-20 h-20" : "w-6 h-6"} `} src={d.fileURL} height={1000} width={1000} priority alt="icon"></Image>
+                                                    <div className='flex items-center w-full justify-center  '>
+                                                        <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
+                                                        <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    </div>
                                                 </div>
-                                                <Image className='w-6 h-6' src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                <Image className={`${styleMenu === 'block' ? "hidden" : ""} w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
                                             </Link>
                                         )
                                     ))

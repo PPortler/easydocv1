@@ -156,15 +156,12 @@ function RegisterPage() {
                             <p className='bg-white text-gray-500 w-fit p-1 relative  text-xs text-center ' style={{ top: "-.8rem" }}>Or login with</p>
                         </div>
                     </div>
-                    <div className='grid grid-cols-3 gap-2 mt-3'>
+                    <div className='grid grid-cols-2 gap-2 mt-3'>
                         <Link className='flex border rounded-lg border-[#2581C1] p-2 px-4 justify-center' href="#">
                             <Image className='w-6 h-6' src="/image/main/google.png" width={1000} height={1000} priority alt="icon" />
                         </Link>
                         <Link className='flex border rounded-lg border-[#2581C1] p-2 px-4 justify-center' href="#">
-                            <Image className='w-6 h-6' src="/image/main/google.png" width={1000} height={1000} priority alt="icon" />
-                        </Link>
-                        <Link className='flex border rounded-lg border-[#2581C1] p-2 px-4 justify-center' href="#">
-                            <Image className='w-6 h-6' src="/image/main/google.png" width={1000} height={1000} priority alt="icon" />
+                            <Image className='w-6 h-6' src="/image/main/facebook.png" width={1000} height={1000} priority alt="icon" />
                         </Link>
                     </div>
                 </div>

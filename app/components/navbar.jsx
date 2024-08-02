@@ -27,19 +27,19 @@ function Navbar({ data }) {
     }
   }, [checkSlider])
   return (
-    <div className='w-fit z-10 shadow-lg'>
+    <div className='fixed left w-fit z-10 shadow-lg'>
       <input id="checkSlider" type="checkbox" className={`${style.input_slider}`} />
       <div className='hidden  lg:block bg-[#080325] h-screen'>
         <div className='p-3'>
           <div onClick={handleSlider} className={`bg-[#0F75BC] rounded-full p-3 hover:cursor-pointer`}>
-            <Image className=' w-6 h-5 ' src="/image/myfile/menu.png" width={1000} height={1000} alt="icon"></Image>
+            <Image className=' w-6 h-6 ' src="/image/myfile/menu.png" width={1000} height={1000} alt="icon"></Image>
           </div>
         </div>
         <div className='mt-5 flex flex-col items-center '>
-          <Link href="#" className=' transition-colors w-full flex justify-center p-3 py-4'>
+          <Link href="/myfile" className=' transition-colors w-full flex justify-center p-3 py-4'>
             <Image className=' w-6 h-6 ' src="/image/myfile/user.png" width={1000} height={1000} alt="icon"></Image>
           </Link>
-          <Link href="#" className='hover:bg-[#0F75BC] transition-colors w-full flex justify-center p-3 py-4'>
+          <Link href="/admin" className='hover:bg-[#0F75BC] transition-colors w-full flex justify-center p-3 py-4'>
             <Image className=' w-6 h-6 ' src="/image/myfile/admin_white.png" width={1000} height={1000} alt="icon"></Image>
           </Link>
           <Link href="#" className='hover:bg-[#0F75BC] transition-colors w-full flex justify-center p-3 py-4'>
@@ -63,7 +63,7 @@ function Navbar({ data }) {
           <Link href="#" className='hover:bg-[#0F75BC] transition-colors w-full flex justify-center p-3 py-4'>
             <Image className=' w-6 h-6 ' src="/image/myfile/settings_white.png" width={1000} height={1000} alt="icon"></Image>
           </Link>
-          <Link href="#" className='hover:bg-red-500 transition-colors w-full flex justify-center p-3 py-4'>
+          <Link onClick={() => signOut()} href="#" className='hover:bg-red-500 transition-colors w-full flex justify-center p-3 py-4'>
             <Image className=' w-6 h-6 ' src="/image/myfile/logout.png" width={1000} height={1000} alt="icon"></Image>
           </Link>
         </div>
