@@ -197,13 +197,13 @@ function MyfilePage() {
                     <div className='z-0 my-5 relative mx-5 p-5 flex flex-col shadow-md border border-gray-200 rounded-lg'>
                         <h1 className='font-bold '>Folders</h1>
                         <div className='mt-3 relative '>
-                            <div className={`${styleMenu === 'block' ? "grid-cols-2 xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3" : "grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2"} grid    gap-3`}>
+                            <div className={`${styleMenu === 'block' ? "grid-cols-2 xl:grid-cols-7 lg:grid-cols-4 sm:grid-cols-3" : "grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2"} grid    gap-3`}>
                                 {getItemSearch.length > 0 ? (
                                     getItemSearch.map((d, index) => (
                                         d.fileType === 'pdf' ? (
                                             <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
                                                 <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
-                                                    <Image className={`${styleMenu === 'block' ? "w-14 h-14" : "w-6 h-6"} `} src="/image/myfile/pdf.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    <Image className={`${styleMenu === 'block' ? "w-full h-32" : "w-6 h-6"} `} src="/image/myfile/pdf.png"  height={1000} width={1000} priority alt="icon"></Image>
                                                     <div className='flex items-center w-full justify-center  '>
                                                         <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
                                                         <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
@@ -214,7 +214,7 @@ function MyfilePage() {
                                         ) : d.fileType === 'docx' ? (
                                             <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
                                                 <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
-                                                    <Image className={`${styleMenu === 'block' ? "w-14 h-14" : "w-6 h-6"} `} src="/image/myfile/doc.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    <Image className={`${styleMenu === 'block' ? "w-full h-32" : "w-6 h-6"} `} src="/image/myfile/doc.png"  height={1000} width={1000} priority alt="icon"></Image>
                                                     <div className='flex items-center w-full justify-center  '>
                                                         <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
                                                         <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
@@ -225,7 +225,7 @@ function MyfilePage() {
                                         ) : d.fileType === 'xlsx' ? (
                                             <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
                                                 <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
-                                                    <Image className={`${styleMenu === 'block' ? "w-14 h-14" : "w-6 h-6"} `} src="/image/myfile/xlsx.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    <Image className={`${styleMenu === 'block' ? "w-full h-32" : "w-6 h-6"} `} src="/image/myfile/xlsx.png"  height={1000} width={1000} priority alt="icon"></Image>
                                                     <div className='flex items-center w-full justify-center  '>
                                                         <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
                                                         <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
@@ -236,7 +236,7 @@ function MyfilePage() {
                                         ) : d.fileType === 'zip' || d.fileType === 'rar' ? (
                                             <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
                                                 <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
-                                                    <Image className={`${styleMenu === 'block' ? "w-14 h-14" : "w-6 h-6"} `} src="/image/myfile/zip.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    <Image className={`${styleMenu === 'block' ? "w-full h-32" : "w-6 h-6"} `} src="/image/myfile/zip.png"  height={1000} width={1000} priority alt="icon"></Image>
                                                     <div className='flex items-center w-full justify-center  '>
                                                         <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
                                                         <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
@@ -247,7 +247,7 @@ function MyfilePage() {
                                         ) : (
                                             <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
                                                 <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
-                                                    <Image className={`${styleMenu === 'block' ? "w-20 h-20" : "w-6 h-6"} `} src={d.fileURL} height={1000} width={1000} priority alt="icon"></Image>
+                                                    <Image className={`${styleMenu === 'block' ? "w-full h-32" : "w-6 h-6"} `} src={d.fileURL} height={1000} width={1000} priority alt="icon"></Image>
                                                     <div className='flex items-center w-full justify-center  '>
                                                         <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
                                                         <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
