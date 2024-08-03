@@ -56,6 +56,7 @@ function MyfilePage() {
             const data = await res.json();
             setMyFile(data.myfile);
 
+
         } catch (err) {
             console.log("Error fetch api myfilePage", err);
         }
@@ -80,6 +81,7 @@ function MyfilePage() {
         }
     }
 
+ 
     const [showAdd, setShowAdd] = useState(false)
 
     useEffect(() => {
@@ -100,6 +102,52 @@ function MyfilePage() {
         document.getElementById('showUpload').classList.remove('hidden')
         setShowAdd(prev => !prev);
     }
+
+    const [search, setSearch] = useState('')
+    const [getItemSearch, setGetItemSearch] = useState([])
+    const [selectSearch, setSelectSearch] = useState('')
+
+    function handleCloseSearch() {
+        setSelectSearch('');
+        setSearch('');
+    }
+
+    function handleSearch(str ,e) {
+        e.preventDefault();
+
+        document.getElementById('search').value = '';
+        setSelectSearch(str)
+
+        getSearch();
+    }
+
+    function getSearch() {
+        if (!search && !selectSearch) {
+            setGetItemSearch(myFile);
+            return;
+        }
+
+        if (!selectSearch) {
+            const lowercaseSearch = search.toLowerCase();
+            const tempItem = myFile.filter(d => d.fileName.toLowerCase().includes(lowercaseSearch));
+            setGetItemSearch(tempItem);
+
+        } else {
+            const lowercaseSearch = selectSearch.toLowerCase();
+            const tempItem = myFile.filter(d => d.fileName.toLowerCase().includes(lowercaseSearch));
+            setGetItemSearch(tempItem);
+
+        }
+    }
+
+    useEffect(() => {
+        if (!selectSearch && !search) {
+            setGetItemSearch(myFile);
+        }
+        getSearch();
+
+    }, [selectSearch, search, myFile])
+
     return (
         <div>
             <Navbar data={dataUser} />
@@ -116,13 +164,20 @@ function MyfilePage() {
                     </div>
                     <hr className='my-3 bg-black ' />
                     <div style={{ zIndex: "1" }} className=' border-b  bg-white sticky top-0 flex lg:flex-row items-end flex-col gap-5 md:justify-between p-5 px-10'>
-                        <div className=' overflow-hidden flex items-center border rounded-md border-[#0F75BC] w-full lg:w-4/12 shadow-sm '>
-                            <input type="text" className='w-full h-8 px-4 rounded-s-md' placeholder='Search file...' />
-                            <button className='text-white  h-8 px-2 bg-[#0F75BC] '>
+                        <form onSubmit={(e)=> handleSearch(search,e)} className=' overflow-hidden flex items-center border rounded-md border-[#0F75BC] w-full lg:w-4/12 shadow-sm '>
+                            <input id="search" onChange={(e) => setSearch(e.target.value)} type="text" className='w-full h-8 px-4 rounded-s-md' placeholder='Search file...' />
+                            <button type='submit' className='text-white  h-8 px-2 bg-[#0F75BC] '>
                                 <Image className='h-5 w-6' src="/image/myfile/search.png" height={1000} width={1000} alt="icon" priority />
                             </button>
-                        </div>
+                        </form>
+
                         <div className='flex  items-center gap-3'>
+                            {selectSearch && (
+                                <div className='bg-gray-500 p-1 px-2 text-white rounded-lg flex justify-between gap-1'>
+                                    <p>{selectSearch}</p>
+                                    <Image onClick={handleCloseSearch} className='hover:cursor-pointer w-3 h-3' src="/image/myfile/close.png" height={1000} width={1000} priority alt="icon"></Image>
+                                </div>
+                            )}
                             <div className='hidden lg:flex justify-center items-center gap-2'>
                                 <Image className='w-3 h-3' src="/image/myfile/down-arrow.png" height={1000} width={1000} priority alt="icon"></Image>
                                 <p>Last modified by me</p>
@@ -143,8 +198,8 @@ function MyfilePage() {
                         <h1 className='font-bold '>Folders</h1>
                         <div className='mt-3 relative '>
                             <div className={`${styleMenu === 'block' ? "grid-cols-2 xl:grid-cols-5 lg:grid-cols-4 sm:grid-cols-3" : "grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2"} grid    gap-3`}>
-                                {myFile.length > 0 ? (
-                                    myFile.map((d, index) => (
+                                {getItemSearch.length > 0 ? (
+                                    getItemSearch.map((d, index) => (
                                         d.fileType === 'pdf' ? (
                                             <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
                                                 <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
