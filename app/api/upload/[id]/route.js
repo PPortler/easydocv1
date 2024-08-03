@@ -19,3 +19,11 @@ export async function GET(req){
   const myfile = await File.find({ email:email })
   return NextResponse.json({ myfile });
 }
+
+export async function DELETE(req){
+  const id = req.nextUrl.pathname.split('/').pop();
+  await connectDB();
+  await File.findByIdAndDelete(id);
+  console.log(id);
+  return NextResponse.json({ message: "Deleted file" }, { status: 200 });
+}

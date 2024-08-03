@@ -17,6 +17,7 @@ function Admin() {
 
 
     const [dataUser, setDataUser] = useState([])
+    const [idNameUser,setIdNameUser] = useState('');
 
     async function getDataUser() {
         try {
@@ -38,7 +39,6 @@ function Admin() {
 
     const [showConfirm, setShowConfirm] = useState(false);
     const [userID, setUserID] = useState('');
-    const titleDelete = "Do you want to delete"
 
     useEffect(()=>{
         if(showConfirm){
@@ -49,13 +49,19 @@ function Admin() {
     },[showConfirm])
     
     function handleShowConfirm(id) {
+        const tempName = dataUser.find(data => data._id === id);
+        if(tempName){
+            setIdNameUser(tempName.email);
+        }
         setUserID(id)
         setShowConfirm(true);
     }
     function handleCancel() {
         setShowConfirm(false);
+        setStatusLoad(false)
     }
     function handleConfirm() {
+        setStatusLoad(true)
         DeleteUser(userID)
         setShowConfirm(false);
     }
@@ -67,8 +73,12 @@ function Admin() {
             })
 
             if (!res.ok) {
+                alert("faile");
+                handleCancel();
                 throw new Error("Error fetch api delete user");
             }
+
+            handleCancel();
             window.location.reload();
         } catch (err) {
             console.log(err);
@@ -77,8 +87,6 @@ function Admin() {
     }
 
     useEffect(() => {
-        
-        
         getDataUser();
 
     }, [])
@@ -132,7 +140,7 @@ function Admin() {
             {showConfirm ? (
                 <>
                     <Confirm
-                        title={titleDelete}
+                        title={`Do you want to delete "${idNameUser}" ?`}
                         cancel={handleCancel}
                         confirm={handleConfirm}
                         role= "delete"

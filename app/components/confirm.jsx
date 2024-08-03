@@ -1,16 +1,15 @@
-"use client"
+
 
 import React from 'react'
 import Image from 'next/image'
-import { useEffect,useState } from 'react'
 
 
 function Confirm({ title, confirm, cancel, role }) {
 
     return (
         <div>
-            <div className='absolute z-10 top-0 left-0 h-screen w-screen bg-black opacity-30'></div>
-            <div className='absolute z-20 top-0 left-0 h-screen w-screen flex justify-center items-center'>
+            <div className='fixed z-10 top-0 left-0 h-screen w-screen bg-black opacity-30'></div>
+            <div className='fixed z-20 top-0 left-0 h-screen w-screen flex justify-center items-center'>
                 <div className='flex justify-center flex-col items-center  p-5 border rounded-md bg-white shadow-lg'>
                     {role === 'delete' ? (
                         <Image className='h-28 w-28' src="/image/main/delete.png" height={1000} width={1000} priority alt="icon"></Image>

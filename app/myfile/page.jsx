@@ -9,7 +9,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Addfile from '../components/addfile'
 import Loader from '../components/loader'
-
+import Confirm from '../components/confirm'
 
 function MyfilePage() {
 
@@ -81,7 +81,7 @@ function MyfilePage() {
         }
     }
 
- 
+
     const [showAdd, setShowAdd] = useState(false)
 
     useEffect(() => {
@@ -91,6 +91,7 @@ function MyfilePage() {
         } else {
             document.body.classList.remove('no_scroll')
         }
+        setIdFileDot('');
     }, [showAdd])
 
     function handlecancel() {
@@ -112,7 +113,7 @@ function MyfilePage() {
         setSearch('');
     }
 
-    function handleSearch(str ,e) {
+    function handleSearch(str, e) {
         e.preventDefault();
 
         document.getElementById('search').value = '';
@@ -145,8 +146,58 @@ function MyfilePage() {
             setGetItemSearch(myFile);
         }
         getSearch();
+        setIdFileDot('');
 
     }, [selectSearch, search, myFile])
+
+
+    const [idFileDot, setIdFileDot] = useState('');
+    const [idFileDelete, setIdFileDelete] = useState('');
+    const [FileDeleteName, setFileDeleteName] = useState('');
+
+    function showDotFile(id,e) {
+        e.preventDefault();
+        setIdFileDot(prevId => prevId === id ? '' : id);
+    }
+
+    const [showConfirm, setShowConfirm] = useState(false)
+
+    function ShowDeleteFile(id, name) {
+        setIdFileDelete(id)
+        setFileDeleteName(name)
+        setShowConfirm(true)
+        document.body.classList.add('no_scroll');
+    }
+
+    function handleCancelConfirm() {
+        setShowConfirm(false);
+        setIdFileDot('');
+        setIdFileDelete('');
+        setStatusLoad(false)
+        document.body.classList.remove('no_scroll');
+    }
+
+    async function handleConfirmDelete() {
+        setStatusLoad(true)
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/upload/${idFileDelete}`, {
+                method: "DELETE"
+            })
+
+            if (!res.ok) {
+                alert('Delete failed!');
+                handleCancelConfirm();
+                setIdFileDelete('');
+                return;
+            }
+
+            handleCancelConfirm();
+            window.location.reload();
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     return (
         <div>
@@ -164,7 +215,7 @@ function MyfilePage() {
                     </div>
                     <hr className='my-3 bg-black ' />
                     <div style={{ zIndex: "1" }} className=' border-b  bg-white sticky top-0 flex lg:flex-row items-end flex-col gap-5 md:justify-between p-5 px-10'>
-                        <form onSubmit={(e)=> handleSearch(search,e)} className=' overflow-hidden flex items-center border rounded-md border-[#0F75BC] w-full lg:w-4/12 shadow-sm '>
+                        <form onSubmit={(e) => handleSearch(search, e)} className=' overflow-hidden flex items-center border rounded-md border-[#0F75BC] w-full lg:w-4/12 shadow-sm '>
                             <input id="search" onChange={(e) => setSearch(e.target.value)} type="text" className='w-full h-8 px-4 rounded-s-md' placeholder='Search file...' />
                             <button type='submit' className='text-white  h-8 px-2 bg-[#0F75BC] '>
                                 <Image className='h-5 w-6' src="/image/myfile/search.png" height={1000} width={1000} alt="icon" priority />
@@ -197,63 +248,41 @@ function MyfilePage() {
                     <div className='z-0 my-5 relative mx-5 p-5 flex flex-col shadow-md border border-gray-200 rounded-lg'>
                         <h1 className='font-bold '>Folders</h1>
                         <div className='mt-3 relative '>
-                            <div className={`${styleMenu === 'block' ? "grid-cols-2 xl:grid-cols-7 lg:grid-cols-4 sm:grid-cols-3" : "grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2"} grid    gap-3`}>
+                            <div className={`${styleMenu === 'block' ? "grid-cols-2 xl:grid-cols-6 lg:grid-cols-5 sm:grid-cols-4" : "grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2"} grid    gap-3`}>
                                 {getItemSearch.length > 0 ? (
                                     getItemSearch.map((d, index) => (
-                                        d.fileType === 'pdf' ? (
+                                        (
                                             <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
                                                 <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
-                                                    <Image className={`${styleMenu === 'block' ? "w-full h-32" : "w-6 h-6"} `} src="/image/myfile/pdf.png"  height={1000} width={1000} priority alt="icon"></Image>
+                                                    <Image className={`${styleMenu === 'block' ? "w-32 h-32" : "w-6 h-6"} `}
+                                                        src={d.fileType === 'pdf' ? "/image/myfile/pdf.png" :
+                                                            d.fileType === 'docx' ? "/image/myfile/doc.png" :
+                                                                d.fileType === 'xlsx' ? "/image/myfile/xlsx.png" :
+                                                                    d.fileType === 'rar' || d.fileType === 'zip' ? "/image/myfile/zip.png" :
+                                                                        d.fileURL
+                                                        }
+                                                        height={1000} width={1000} priority alt="icon"></Image>
                                                     <div className='flex items-center w-full justify-center  '>
                                                         <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
-                                                        <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+
+                                                        <div className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"}`}>
+                                                            <Image onClick={(e) => showDotFile(d._id,e)} className={`w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                            <div className={`${idFileDot === d._id ? "block" : "hidden"} bg-white absolute top-6 shadow-2xl z-10`}>
+                                                                <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>View</button>
+                                                                <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>Download</button>
+                                                                <button onClick={() => ShowDeleteFile(d._id, d.fileName)} className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>Delete</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <Image className={`${styleMenu === 'block' ? "hidden" : ""} w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                            </Link>
-                                        ) : d.fileType === 'docx' ? (
-                                            <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
-                                                <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
-                                                    <Image className={`${styleMenu === 'block' ? "w-full h-32" : "w-6 h-6"} `} src="/image/myfile/doc.png"  height={1000} width={1000} priority alt="icon"></Image>
-                                                    <div className='flex items-center w-full justify-center  '>
-                                                        <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
-                                                        <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                <div className={`${styleMenu === 'block' ? "hidden" : ""} relative `}>
+                                                    <Image onClick={(e) => showDotFile(d._id,e)} className={`hover:cursor-pointer w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    <div className={`${idFileDot === d._id ? "block" : "hidden"} bg-white absolute top-6 shadow-xl z-10`}>
+                                                        <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>View</button>
+                                                        <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>Download</button>
+                                                        <button onClick={() => ShowDeleteFile(d._id, d.fileName)} className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>Delete</button>
                                                     </div>
                                                 </div>
-                                                <Image className={`${styleMenu === 'block' ? "hidden" : ""} w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                            </Link>
-                                        ) : d.fileType === 'xlsx' ? (
-                                            <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
-                                                <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
-                                                    <Image className={`${styleMenu === 'block' ? "w-full h-32" : "w-6 h-6"} `} src="/image/myfile/xlsx.png"  height={1000} width={1000} priority alt="icon"></Image>
-                                                    <div className='flex items-center w-full justify-center  '>
-                                                        <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
-                                                        <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                                    </div>
-                                                </div>
-                                                <Image className={`${styleMenu === 'block' ? "hidden" : ""} w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                            </Link>
-                                        ) : d.fileType === 'zip' || d.fileType === 'rar' ? (
-                                            <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
-                                                <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
-                                                    <Image className={`${styleMenu === 'block' ? "w-full h-32" : "w-6 h-6"} `} src="/image/myfile/zip.png"  height={1000} width={1000} priority alt="icon"></Image>
-                                                    <div className='flex items-center w-full justify-center  '>
-                                                        <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
-                                                        <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                                    </div>
-                                                </div>
-                                                <Image className={`${styleMenu === 'block' ? "hidden" : ""} w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                            </Link>
-                                        ) : (
-                                            <Link key={index} href="#" className={`${styleMenu === 'block' ? "flex-col" : ""} relative shadow-sm rounded-lg bg-gray-100 flex justify-between p-2 px-3`}>
-                                                <div className={`${styleMenu === 'block' ? "flex-col" : ""} flex gap-3 items-center`}>
-                                                    <Image className={`${styleMenu === 'block' ? "w-full h-32" : "w-6 h-6"} `} src={d.fileURL} height={1000} width={1000} priority alt="icon"></Image>
-                                                    <div className='flex items-center w-full justify-center  '>
-                                                        <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
-                                                        <Image className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"} w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                                    </div>
-                                                </div>
-                                                <Image className={`${styleMenu === 'block' ? "hidden" : ""} w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
                                             </Link>
                                         )
                                     ))
@@ -264,15 +293,18 @@ function MyfilePage() {
 
                             </div>
                         </div>
-                        <button onClick={handleShowAdd} className='fixed md:absolute bottom-0 right-0 m-5'>
-                            <Image className='w-12 h-12 transition-opacity opacity-40 hover:cursor-pointer hover:opacity-100 ' src="/image/myfile/plus.png" height={1000} width={1000} priority alt="icon"></Image>
-                        </button>
+
 
 
                     </div>
                 </div>
 
             </div>
+
+            <button onClick={handleShowAdd} className='fixed md:absolute bottom-0 right-0 m-5'>
+                <Image className='w-12 h-12 transition-opacity opacity-40 hover:cursor-pointer hover:opacity-100 ' src="/image/myfile/plus.png" height={1000} width={1000} priority alt="icon"></Image>
+            </button>
+
             <div style={{ display: showAdd ? "block" : "none" }}>
                 <Addfile
                     cancel={handlecancel}
@@ -282,6 +314,18 @@ function MyfilePage() {
             <div id="loader" style={{ opacity: statusLoad ? "1" : "0", display: statusLoad ? "" : "none" }}>
                 <Loader />
             </div>
+
+            {showConfirm ? (
+                <>
+                    <Confirm
+                        title={`Do you want to delete "${FileDeleteName}" ?`}
+                        cancel={handleCancelConfirm}
+                        confirm={handleConfirmDelete}
+                        role="delete"
+                    />
+                </>
+            ) : null}
+
         </div>
     )
 }

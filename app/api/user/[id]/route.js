@@ -12,6 +12,6 @@ export async function GET(req){
 export async function DELETE(req){
     const id = req.nextUrl.pathname.split('/').pop();
     await connectDB()
-    await Users.findByIdAndDelete( id )
+    await Users.findByIdAndDelete( id );
     return NextResponse.json({ message:"Deleted user" },{status:200});
 }
