@@ -267,7 +267,7 @@ function MyfilePage() {
 
                                                         <div className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"}`}>
                                                             <Image onClick={(e) => showDotFile(d._id,e)} className={`w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                                            <div className={`${idFileDot === d._id ? "block" : "hidden"} bg-white absolute top-6 shadow-2xl z-10`}>
+                                                            <div className={`${idFileDot === d._id ? "block" : "hidden"} border bg-white absolute top-6 shadow-2xl z-10`}>
                                                                 <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>View</button>
                                                                 <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>Download</button>
                                                                 <button onClick={() => ShowDeleteFile(d._id, d.fileName)} className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>Delete</button>
@@ -277,7 +277,7 @@ function MyfilePage() {
                                                 </div>
                                                 <div className={`${styleMenu === 'block' ? "hidden" : ""} relative `}>
                                                     <Image onClick={(e) => showDotFile(d._id,e)} className={`hover:cursor-pointer w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
-                                                    <div className={`${idFileDot === d._id ? "block" : "hidden"} bg-white absolute top-6 shadow-xl z-10`}>
+                                                    <div className={`${idFileDot === d._id ? "block" : "hidden"} border bg-white absolute top-6 shadow-xl z-10`}>
                                                         <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>View</button>
                                                         <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>Download</button>
                                                         <button onClick={() => ShowDeleteFile(d._id, d.fileName)} className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>Delete</button>
@@ -318,7 +318,7 @@ function MyfilePage() {
             {showConfirm ? (
                 <>
                     <Confirm
-                        title={`Do you want to delete "${FileDeleteName}" ?`}
+                        title={`${FileDeleteName}`}
                         cancel={handleCancelConfirm}
                         confirm={handleConfirmDelete}
                         role="delete"

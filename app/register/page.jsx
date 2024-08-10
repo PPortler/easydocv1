@@ -16,7 +16,7 @@ function RegisterPage() {
         setStatusLoad(false)
     }, [])
 
-    
+
     const { data: session } = useSession();
     const router = useRouter()
 
@@ -34,7 +34,15 @@ function RegisterPage() {
     const [Cpassword, setCpassword] = useState("")
     const [error, setError] = useState("")
 
-    
+    const [countPass, setCountPass] = useState(0)
+    const [countCPass, setCountCPass] = useState(0)
+
+    const [checkFirstName, setCheckFirstName] = useState('');
+    const [checkLastName, setCheckLastName] = useState('');
+    const [checkEmail, setCheckEmail] = useState('');
+    const [checkPhone, setCheckPhone] = useState('');
+    const [checkPassword, setCheckPassword] = useState('');
+    const [checkCPassword, setCheckCPassword] = useState('');
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -47,11 +55,60 @@ function RegisterPage() {
             return;
         }
 
-        if (password !== Cpassword) {
-            setError("Password don't match");
+        setCheckFirstName('pass');
+        setCheckLastName('pass');
+
+        let checkEmail = true
+        for (let i = 0; i < email.length; i++) {
+            if (email.charAt(i) === "@") {
+                const domain = email.slice(i + 1);
+                if (domain === "gmail.com" || domain === "hotmail.com") {
+                    checkEmail = false;
+                    setCheckEmail('pass');
+                    break;
+                }
+            }
+        }
+
+        if (checkEmail) {
+            setStatusLoad(false);
+            setCheckEmail('wrong');
+            setError('Email invalid please input @gmail.com or @hotmail.com!');
+            return;
+        }
+
+        if (isNaN(parseInt(phone, 10))) {
+            setError("Please input your number.");
+            setCheckPhone('wrong');
             setStatusLoad(false);
             return;
         }
+        if (phone.length <= 9) {
+            setError("Phone number invalid.");
+            setCheckPhone('wrong');
+            setStatusLoad(false);
+            return;
+        }
+
+        setCheckPhone('pass')
+
+        if (password.length <= 7) {
+            setError("Password must be at least 8 characters.");
+            setCheckPassword('wrong');
+            setStatusLoad(false);
+            return;
+        }
+
+        setCheckPassword('pass');
+
+        if (password !== Cpassword) {
+            setError("Password don't match");
+            setCheckCPassword('wrong');
+            setStatusLoad(false);
+            return;
+        }
+
+        setCheckCPassword('pass');
 
         const check_agree = document.getElementById('check_agree');
         if (!check_agree.checked) {
@@ -110,32 +167,42 @@ function RegisterPage() {
                     <form onSubmit={handleSubmit} className='mt-7'>
                         <div className='flex gap-3'>
                             <div className='relative w-full'>
-                                <input onChange={(e) => setFirstName(e.target.value)} className='px-3 w-full border p-2 rounded-lg' type="text" placeholder='Your first name' />
+                                <input onChange={(e) => setFirstName(e.target.value)} className={`${checkFirstName === 'pass'? "border-green-500":checkFirstName === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-lg`} type="text" placeholder='Your first name' />
                                 <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>First Name</span>
                             </div>
                             <div className='relative w-full'>
-                                <input onChange={(e) => setLastName(e.target.value)} className='px-3 w-full border p-2 rounded-lg' type="text" placeholder='Your last name' />
+                                <input onChange={(e) => setLastName(e.target.value)} className={`${checkLastName === 'pass'? " border-green-500":checkLastName === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-lg`} type="text" placeholder='Your last name' />
                                 <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Last Name</span>
                             </div>
                         </div>
                         <div className='mt-4 flex gap-3'>
                             <div className='relative w-full'>
-                                <input onChange={(e) => setEmail(e.target.value)} className='px-3 w-full border p-2 rounded-lg' type="text" placeholder='Enter your email' />
+                                <input onChange={(e) => setEmail(e.target.value)} className={`${checkEmail === 'pass'? " border-green-500":checkEmail === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-lg`} type="text" placeholder='Enter your email' />
                                 <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Email</span>
                             </div>
                             <div className='relative w-full'>
-                                <input onChange={(e) => setPhone(e.target.value)} className='px-3 w-full border p-2 rounded-lg' type="text" placeholder='Enter your phone number' />
+                                <input onChange={(e) => setPhone(e.target.value)} className={`${checkPhone === 'pass'? "border-green-500":checkPhone === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-lg`} type="text" placeholder='Enter your phone number' />
                                 <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Phone Number</span>
+
                             </div>
 
                         </div>
                         <div className='mt-4 relative'>
-                            <input onChange={(e) => setPassword(e.target.value)} className='px-3 w-full border p-2 rounded-lg' type="password" placeholder='Enter your password' />
+                            <input onChange={(e) => {
+                                setPassword(e.target.value);
+                                setCountPass(e.target.value.length);
+                            }} className={`${checkPassword === 'pass'? "border-green-500":checkPassword === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-lg`} type="password" placeholder='Enter your password' />
                             <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Password</span>
+                            <span className={`absolute right-3 ${countPass >= 8 ? "text-black" : "text-gray-400"}  text-sm`} style={{ top: ".7rem" }}>{countPass}/8</span>
                         </div>
                         <div className='mt-4 relative'>
-                            <input onChange={(e) => setCpassword(e.target.value)} className='px-3 w-full border p-2 rounded-lg' type="password" placeholder='confirm password' />
+                            <input onChange={(e) => {
+                                setCpassword(e.target.value);
+                                setCountCPass(e.target.value.length);
+                            }} className={`${checkCPassword === 'pass'? "border-green-500":checkCPassword === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-lg`} type="password" placeholder='confirm password' />
                             <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Confirm Password</span>
+                            <span className={`absolute right-3 ${countPass >= 8 ? "text-black" : "text-gray-400"}  text-sm`} style={{ top: ".7rem" }}>{countCPass}/8</span>
+
                         </div>
                         {error && (
                             <div className='mt-1 text-xs rounded-md p-1 px-2 text-white bg-red-500 w-fit'>

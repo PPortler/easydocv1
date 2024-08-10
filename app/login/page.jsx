@@ -30,21 +30,63 @@ function LoginPage() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
 
+    const [checkEmail, setCheckEmail] = useState('');
+    const [checkPassword, setCheckPassword] = useState('');
+
 
     async function handleSubmit(e) {
         e.preventDefault();
         setStatusLoad(true)
+
+        if(!email || !password){
+            setError("Please input email and password!")
+            setStatusLoad(false);
+            return;
+        }
 
         try {
             const res = await signIn("credentials", {
                 email, password, redirect: false
             })
             if (res.error) {
-                setError("Invalid credentials");
-                setStatusLoad(false)
-                return;
+                try {
+                    const resCheckUser = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/checkuser`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ email })
+                    })
+
+                    if (!resCheckUser.ok) {
+                        setStatusLoad(false);
+                        throw new Error("Error fetch api checkuser.")
+                    }
+
+                    const { user } = await resCheckUser.json()
+
+                    if (user) {
+                        setError("Password invalid!")
+                        setCheckEmail('pass');
+                        setCheckPassword('wrong');
+                        setStatusLoad(false);
+                        return;
+                    } else {
+                        setError("Email Invalid!");
+                        setCheckEmail('wrong');
+                        setStatusLoad(false)
+                        return;
+                    }
+
+                } catch (err) {
+                    setStatusLoad(false);
+                    console.log("Error Fetch Api in register: ", err)
+                }
+
+
             }
-            
+            setCheckPassword('pass');
+            alert('Login succses.')
             router.replace('/myfile')
         } catch (err) {
             console.log(err);
@@ -59,11 +101,11 @@ function LoginPage() {
                     <p className='text-gray-500 text-xs mt-2'>Login to access your travelwise account</p>
                     <form onSubmit={handleSubmit} className='mt-7'>
                         <div className='relative'>
-                            <input onChange={(e) => setEmail(e.target.value)} className='px-3 w-full border p-2 rounded-md' type="text" placeholder='Enter your email' />
+                            <input onChange={(e) => setEmail(e.target.value)} className={`${checkEmail === 'pass'? " border-green-500":checkEmail === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-md`} type="text" placeholder='Enter your email' />
                             <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Email</span>
                         </div>
                         <div className='mt-4 relative'>
-                            <input onChange={(e) => setPassword(e.target.value)} className='px-3 w-full border p-2 rounded-md' type="password" placeholder='Enter your password' />
+                            <input onChange={(e) => setPassword(e.target.value)} className={`${checkPassword === 'pass'? " border-green-500":checkPassword === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-md`} type="password" placeholder='Enter your password' />
                             <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Password</span>
                         </div>
                         {error && (
@@ -95,12 +137,12 @@ function LoginPage() {
                         <Link className='flex border rounded-lg border-[#2581C1] p-2 px-4 justify-center' href="#">
                             <Image className='w-6 h-6' src="/image/main/facebook.png" width={1000} height={1000} priority alt="icon" />
                         </Link>
-                       
+
                     </div>
                 </div>
                 <Image className='hidden lg:block rounded-lg shadow-md h-fit w-96' src="/image/main/poster_login.png" height={1000} width={1000} priority alt="poster-login"></Image>
             </div>
-            <div id="loader" style={{opacity: statusLoad ? "1" : "0", display: statusLoad ? "":"none"}}>
+            <div id="loader" style={{ opacity: statusLoad ? "1" : "0", display: statusLoad ? "" : "none" }}>
                 <Loader />
             </div>
         </div>

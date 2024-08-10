@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <div>
       <Navbarmain />
-      <div className="size-container">
+      <div className="mt-20 md:mt-36">
         <Maincontent />
         <Community />
       </div>

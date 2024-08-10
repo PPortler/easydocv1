@@ -1,6 +1,13 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./Providers";
+import '@fontsource/ibm-plex-sans-thai/100.css';
+import '@fontsource/ibm-plex-sans-thai/200.css';
+import '@fontsource/ibm-plex-sans-thai/300.css';
+import '@fontsource/ibm-plex-sans-thai/400.css';
+import '@fontsource/ibm-plex-sans-thai/500.css';
+import '@fontsource/ibm-plex-sans-thai/600.css';
+import '@fontsource/ibm-plex-sans-thai/700.css';
 
 const inter = Inter({ subsets: ["latin"] });
 

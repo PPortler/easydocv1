@@ -140,7 +140,7 @@ function Admin() {
             {showConfirm ? (
                 <>
                     <Confirm
-                        title={`Do you want to delete "${idNameUser}" ?`}
+                        title={`${idNameUser}`}
                         cancel={handleCancel}
                         confirm={handleConfirm}
                         role= "delete"

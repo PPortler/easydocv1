@@ -6,7 +6,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'IBM Plex Sans Thai', sans-serif;
 }
 .no_scroll{
   position: absolute;
@@ -18,7 +18,7 @@
 }
 @layer components{
   .box-main{
-    @apply flex flex-col rounded-md p-5 text-center shadow-md justify-center items-center
+    @apply flex flex-col rounded-md p-5 text-center shadow-md justify-center items-center border
   }
   .size-screen{
     @apply px-5 md:px-10 lg:px-20 xl:px-36
