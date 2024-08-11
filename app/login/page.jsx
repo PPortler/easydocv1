@@ -39,7 +39,7 @@ function LoginPage() {
         setStatusLoad(true)
 
         if(!email || !password){
-            setError("Please input email and password!")
+            setError("กรุณากรอก อีเมลและรหัสผ่าน ของคุณ")
             setStatusLoad(false);
             return;
         }
@@ -66,13 +66,13 @@ function LoginPage() {
                     const { user } = await resCheckUser.json()
 
                     if (user) {
-                        setError("Password invalid!")
+                        setError("รหัสผ่านของคุณไม่ถูกต้อง")
                         setCheckEmail('pass');
                         setCheckPassword('wrong');
                         setStatusLoad(false);
                         return;
                     } else {
-                        setError("Email Invalid!");
+                        setError("อีเมลของคุณไม่ถูกต้อง");
                         setCheckEmail('wrong');
                         setStatusLoad(false)
                         return;
@@ -86,7 +86,7 @@ function LoginPage() {
 
             }
             setCheckPassword('pass');
-            alert('Login succses.')
+            alert('เข้าสู่ระบบสำเร็จ')
             router.replace('/myfile')
         } catch (err) {
             console.log(err);
@@ -97,16 +97,16 @@ function LoginPage() {
             <Navbarlogin />
             <div className='size-container justify-center mx-auto  items-center flex gap-20 '>
                 <div className=' w-10/12 md:w-8/12 lg:w-4/12 flex flex-col justify-between '>
-                    <h1 className='text-3xl font-bold'>Login</h1>
-                    <p className='text-gray-500 text-xs mt-2'>Login to access your travelwise account</p>
+                    <h1 className='text-3xl font-bold'>เข้าสู่ระบบ</h1>
+                    <p className='text-gray-500 text-xs mt-2'>เข้าสู่ระบบเพื่อเข้าถึงบัญชี easy doc ของคุณ</p>
                     <form onSubmit={handleSubmit} className='mt-7'>
                         <div className='relative'>
-                            <input onChange={(e) => setEmail(e.target.value)} className={`${checkEmail === 'pass'? " border-green-500":checkEmail === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-md`} type="text" placeholder='Enter your email' />
-                            <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Email</span>
+                            <input onChange={(e) => setEmail(e.target.value)} className={`${checkEmail === 'pass'? " border-green-500":checkEmail === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-md`} type="text" placeholder='กรอกอีเมลของคุณ' />
+                            <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>อีเมล</span>
                         </div>
                         <div className='mt-4 relative'>
-                            <input onChange={(e) => setPassword(e.target.value)} className={`${checkPassword === 'pass'? " border-green-500":checkPassword === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-md`} type="password" placeholder='Enter your password' />
-                            <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Password</span>
+                            <input onChange={(e) => setPassword(e.target.value)} className={`${checkPassword === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-md`} type="password" placeholder='กรอกรหัสผ่านของคุณ' />
+                            <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>รหัสผ่าน</span>
                         </div>
                         {error && (
                             <div className='mt-1 text-xs rounded-md p-1 px-2 text-white bg-red-500 w-fit'>
@@ -116,18 +116,18 @@ function LoginPage() {
                         <div className='mt-4 flex  text-xs justify-between'>
                             <div className='flex gap-1'>
                                 <input className=' border border-black' type="checkbox" />
-                                <label >Remember me</label>
+                                <label >จดจำรหัสผ่านนี้</label>
                             </div>
-                            <Link className='text-[#FF8682] hover:underline' href="/forgot" >Forgot Password ?</Link>
+                            <Link className='text-[#FF8682] hover:underline' href="/forgot" >ลืมรหัสผ่าน ?</Link>
                         </div>
 
-                        <button type='submit' className='w-full mt-8 text-white bg-[#2581C1] p-2 rounded-lg'>Login</button>
+                        <button type='submit' className='w-full mt-8 text-white bg-[#2581C1] p-2 rounded-lg'>เข้าสู่ระบบ</button>
                     </form>
-                    <p className='text-center mt-3 text-xs'>Don't have an account? <Link href="/register" className='text-[#FF8682] hover:underline'>Sign up</Link></p>
+                    <p className='text-center mt-3 text-xs'>ยังไม่มีบัญชี ? <Link href="/register" className='text-[#FF8682] hover:underline'>ลงทะเบียน</Link></p>
                     <div className='relative'>
                         <hr className='mt-14 text-gray-500' />
                         <div className='flex justify-center'>
-                            <p className='bg-white text-gray-500 w-fit p-1 relative  text-xs text-center ' style={{ top: "-.8rem" }}>Or login with</p>
+                            <p className='bg-white text-gray-500 w-fit p-1 relative  text-xs text-center ' style={{ top: "-.8rem" }}>เข้าสู่ระบบด้วย</p>
                         </div>
                     </div>
                     <div className='grid grid-cols-2 gap-2 mt-3'>

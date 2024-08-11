@@ -185,7 +185,7 @@ function MyfilePage() {
             })
 
             if (!res.ok) {
-                alert('Delete failed!');
+                alert('ลบไฟล์ไม่สำเร็จ');
                 handleCancelConfirm();
                 setIdFileDelete('');
                 return;
@@ -216,7 +216,7 @@ function MyfilePage() {
                     <hr className='my-3 bg-black ' />
                     <div style={{ zIndex: "1" }} className=' border-b  bg-white sticky top-0 flex lg:flex-row items-end flex-col gap-5 md:justify-between p-5 px-10'>
                         <form onSubmit={(e) => handleSearch(search, e)} className=' overflow-hidden flex items-center border rounded-md border-[#0F75BC] w-full lg:w-4/12 shadow-sm '>
-                            <input id="search" onChange={(e) => setSearch(e.target.value)} type="text" className='w-full h-8 px-4 rounded-s-md' placeholder='Search file...' />
+                            <input id="search" onChange={(e) => setSearch(e.target.value)} type="text" className='w-full h-8 px-4 rounded-s-md' placeholder='ค้นหาไฟล์ของคุณ...' />
                             <button type='submit' className='text-white  h-8 px-2 bg-[#0F75BC] '>
                                 <Image className='h-5 w-6' src="/image/myfile/search.png" height={1000} width={1000} alt="icon" priority />
                             </button>
@@ -231,7 +231,7 @@ function MyfilePage() {
                             )}
                             <div className='hidden lg:flex justify-center items-center gap-2'>
                                 <Image className='w-3 h-3' src="/image/myfile/down-arrow.png" height={1000} width={1000} priority alt="icon"></Image>
-                                <p>Last modified by me</p>
+                                <p>ปรับแต่งล่าสุด</p>
                                 <Image className='w-3 h-3' src="/image/myfile/down.png" height={1000} width={1000} priority alt="icon"></Image>
                             </div>
                             <div className='flex'>
@@ -246,7 +246,7 @@ function MyfilePage() {
                         </div>
                     </div>
                     <div className='z-0 my-5 relative mx-5 p-5 flex flex-col shadow-md border border-gray-200 rounded-lg'>
-                        <h1 className='font-bold '>Folders</h1>
+                        <h1 className='font-bold '>หน้าหลัก</h1>
                         <div className='mt-3 relative '>
                             <div className={`${styleMenu === 'block' ? "grid-cols-2 xl:grid-cols-6 lg:grid-cols-5 sm:grid-cols-4" : "grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2"} grid    gap-3`}>
                                 {getItemSearch.length > 0 ? (
@@ -268,9 +268,9 @@ function MyfilePage() {
                                                         <div className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"}`}>
                                                             <Image onClick={(e) => showDotFile(d._id,e)} className={`w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
                                                             <div className={`${idFileDot === d._id ? "block" : "hidden"} border bg-white absolute top-6 shadow-2xl z-10`}>
-                                                                <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>View</button>
-                                                                <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>Download</button>
-                                                                <button onClick={() => ShowDeleteFile(d._id, d.fileName)} className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>Delete</button>
+                                                                <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>ดู</button>
+                                                                <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>ดาวน์โหลด</button>
+                                                                <button onClick={() => ShowDeleteFile(d._id, d.fileName)} className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>ลบ</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -278,16 +278,16 @@ function MyfilePage() {
                                                 <div className={`${styleMenu === 'block' ? "hidden" : ""} relative `}>
                                                     <Image onClick={(e) => showDotFile(d._id,e)} className={`hover:cursor-pointer w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
                                                     <div className={`${idFileDot === d._id ? "block" : "hidden"} border bg-white absolute top-6 shadow-xl z-10`}>
-                                                        <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>View</button>
-                                                        <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>Download</button>
-                                                        <button onClick={() => ShowDeleteFile(d._id, d.fileName)} className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>Delete</button>
+                                                        <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>ดู</button>
+                                                        <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>ดาวน์โหลด</button>
+                                                        <button onClick={() => ShowDeleteFile(d._id, d.fileName)} className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>ลบ</button>
                                                     </div>
                                                 </div>
                                             </Link>
                                         )
                                     ))
                                 ) : (
-                                    <div className='text-sm text-gray-400'>Press plus to add your files.</div>
+                                    <div className='text-sm text-gray-400'>กดบวกเพื่อเพิ่มไฟล์ของคุณ</div>
                                 )}
 
 

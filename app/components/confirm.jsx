@@ -17,13 +17,13 @@ function Confirm({ title, confirm, cancel, role }) {
                     ) : role === 'confirm' ? (
                         <Image className='h-28 w-28' src="/image/confirm.png" height={1000} width={1000} priority alt="icon"></Image>
                     ) : null}
-                    <h1 className='mt-5 font-bold text-center text-ellipsis overflow-hidden whitespace-nowrap  max-w-44 md:max-w-60 lg:max-w-72'>Do you want to delete <br />"{title}" ?</h1>
+                    <h1 className='mt-5 font-bold text-center text-ellipsis overflow-hidden whitespace-nowrap  max-w-44 md:max-w-60 lg:max-w-72'>คุณต้องการลบ <br />"{title}" ?</h1>
                     <div className='mt-5 flex gap-3 '>
-                        <button onClick={cancel} className='hover:cursor-pointer p-2 px-3 bg-gray-500 text-white rounded-md'>Cancle</button>
+                        <button onClick={cancel} className='hover:cursor-pointer p-2 px-3 bg-gray-500 text-white rounded-md'>ยกเลิก</button>
                         {role === 'delete' ? (
-                            <button onClick={confirm} className='hover:cursor-pointer p-2 px-3 bg-red-500 text-white rounded-md'>Delete</button>
+                            <button onClick={confirm} className='hover:cursor-pointer p-2 px-3 bg-red-500 text-white rounded-md'>ลบ</button>
                         ) : role === 'confirm' ? (
-                            <button onClick={confirm} className='hover:cursor-pointer p-2 px-3 bg-green-500 text-white rounded-md'>Confirm</button>
+                            <button onClick={confirm} className='hover:cursor-pointer p-2 px-3 bg-green-500 text-white rounded-md'>ตกลง</button>
                         ) : null}
                     </div>
                 </div>

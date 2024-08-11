@@ -50,7 +50,7 @@ function RegisterPage() {
         setStatusLoad(true);
 
         if (!firstName || !lastName || !phone || !email || !password) {
-            setError("Please input all");
+            setError("กรุณากรอกให้ครบทุกช่อง");
             setStatusLoad(false);
             return;
         }
@@ -73,18 +73,18 @@ function RegisterPage() {
         if (checkEmail) {
             setStatusLoad(false);
             setCheckEmail('wrong');
-            setError('Email invalid please input @gmail.com or @hotmail.com!');
+            setError('กรุณาใส่ @gmail.com หรือ @hotmail.com ในอีเมลของคุณ');
             return;
         }
 
         if (isNaN(parseInt(phone, 10))) {
-            setError("Please input your number.");
+            setError("กรุณาใส่หมายเลขที่ถูกต้อง");
             setCheckPhone('wrong');
             setStatusLoad(false);
             return;
         }
-        if (phone.length <= 9) {
-            setError("Phone number invalid.");
+        if (phone.length <= 9 || phone.length > 10 || phone.charAt(0) !== '0') {
+            setError("หมายเลขโทรศัพท์ไม่ถูกต้อง");
             setCheckPhone('wrong');
             setStatusLoad(false);
             return;
@@ -93,7 +93,7 @@ function RegisterPage() {
         setCheckPhone('pass')
 
         if (password.length <= 7) {
-            setError("Password must be at least 8 characters.");
+            setError("รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร");
             setCheckPassword('wrong');
             setStatusLoad(false);
             return;
@@ -102,7 +102,7 @@ function RegisterPage() {
         setCheckPassword('pass');
 
         if (password !== Cpassword) {
-            setError("Password don't match");
+            setError("รหัสผ่านไม่ตรงกัน");
             setCheckCPassword('wrong');
             setStatusLoad(false);
             return;
@@ -112,7 +112,7 @@ function RegisterPage() {
 
         const check_agree = document.getElementById('check_agree');
         if (!check_agree.checked) {
-            setError("you don't agree condision in easydoc");
+            setError("คุณไม่เห็นด้วยกับเงื่อนไขใน easydoc");
             setStatusLoad(false);
             return;
         }
@@ -135,7 +135,8 @@ function RegisterPage() {
 
             if (user) {
                 setStatusLoad(false);
-                setError("User already exists!")
+                setCheckEmail('wrong');
+                setError("อีเมลที่กรอกถูกใช้แล้ว")
                 return;
             }
 
@@ -162,27 +163,27 @@ function RegisterPage() {
             <Navbarlogin />
             <div className='size-container justify-center mx-auto  items-center flex-row-reverse flex gap-20 '>
                 <div className=' w-10/12 md:w-8/12 xl:w-4/12 lg:w-5/12 flex flex-col justify-between '>
-                    <h1 className='text-3xl font-bold'>Sign Up</h1>
-                    <p className='text-gray-500 text-xs mt-2'>Let’s get you create your personal account.</p>
+                    <h1 className='text-3xl font-bold'>ลงทะเบียน</h1>
+                    <p className='text-gray-500 text-xs mt-2'>มาเริ่มสร้างบัญชี easy doc ส่วนตัวของคุณกันดีกว่า</p>
                     <form onSubmit={handleSubmit} className='mt-7'>
                         <div className='flex gap-3'>
                             <div className='relative w-full'>
-                                <input onChange={(e) => setFirstName(e.target.value)} className={`${checkFirstName === 'pass'? "border-green-500":checkFirstName === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-lg`} type="text" placeholder='Your first name' />
-                                <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>First Name</span>
+                                <input onChange={(e) => setFirstName(e.target.value)} className={`${checkFirstName === 'pass' ? "border-green-500" : checkFirstName === 'wrong' ? "border-red-500" : ""} px-3 w-full border p-2 rounded-lg`} type="text" placeholder='ชื่อของคุณ' />
+                                <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>ชื่อ</span>
                             </div>
                             <div className='relative w-full'>
-                                <input onChange={(e) => setLastName(e.target.value)} className={`${checkLastName === 'pass'? " border-green-500":checkLastName === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-lg`} type="text" placeholder='Your last name' />
-                                <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Last Name</span>
+                                <input onChange={(e) => setLastName(e.target.value)} className={`${checkLastName === 'pass' ? " border-green-500" : checkLastName === 'wrong' ? "border-red-500" : ""} px-3 w-full border p-2 rounded-lg`} type="text" placeholder='นามสกุลของคุณ' />
+                                <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>นามสกุล</span>
                             </div>
                         </div>
                         <div className='mt-4 flex gap-3'>
                             <div className='relative w-full'>
-                                <input onChange={(e) => setEmail(e.target.value)} className={`${checkEmail === 'pass'? " border-green-500":checkEmail === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-lg`} type="text" placeholder='Enter your email' />
-                                <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Email</span>
+                                <input onChange={(e) => setEmail(e.target.value)} className={`${checkEmail === 'pass' ? " border-green-500" : checkEmail === 'wrong' ? "border-red-500" : ""} px-3 w-full border p-2 rounded-lg`} type="text" placeholder='อีเมลของคุณ' />
+                                <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>อีเมล</span>
                             </div>
                             <div className='relative w-full'>
-                                <input onChange={(e) => setPhone(e.target.value)} className={`${checkPhone === 'pass'? "border-green-500":checkPhone === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-lg`} type="text" placeholder='Enter your phone number' />
-                                <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Phone Number</span>
+                                <input onChange={(e) => setPhone(e.target.value)} className={`${checkPhone === 'pass' ? "border-green-500" : checkPhone === 'wrong' ? "border-red-500" : ""} px-3 w-full border p-2 rounded-lg`} type="text" placeholder='หมายเลขโทรศัพท์ของคุณ' />
+                                <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>เบอร์โทรศัพท์</span>
 
                             </div>
 
@@ -191,16 +192,16 @@ function RegisterPage() {
                             <input onChange={(e) => {
                                 setPassword(e.target.value);
                                 setCountPass(e.target.value.length);
-                            }} className={`${checkPassword === 'pass'? "border-green-500":checkPassword === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-lg`} type="password" placeholder='Enter your password' />
-                            <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Password</span>
+                            }} className={`${checkPassword === 'pass' ? "border-green-500" : checkPassword === 'wrong' ? "border-red-500" : ""} px-3 w-full border p-2 rounded-lg`} type="password" placeholder='สร้างรหัสผ่านของคุณ' />
+                            <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>รหัสผ่าน</span>
                             <span className={`absolute right-3 ${countPass >= 8 ? "text-black" : "text-gray-400"}  text-sm`} style={{ top: ".7rem" }}>{countPass}/8</span>
                         </div>
                         <div className='mt-4 relative'>
                             <input onChange={(e) => {
                                 setCpassword(e.target.value);
                                 setCountCPass(e.target.value.length);
-                            }} className={`${checkCPassword === 'pass'? "border-green-500":checkCPassword === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-lg`} type="password" placeholder='confirm password' />
-                            <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>Confirm Password</span>
+                            }} className={`${checkCPassword === 'pass' ? "border-green-500" : checkCPassword === 'wrong' ? "border-red-500" : ""} px-3 w-full border p-2 rounded-lg`} type="password" placeholder='กรอกรหัสผ่านของคุณอีกครั้ง' />
+                            <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>ยืนยันรหัสผ่าน</span>
                             <span className={`absolute right-3 ${countPass >= 8 ? "text-black" : "text-gray-400"}  text-sm`} style={{ top: ".7rem" }}>{countCPass}/8</span>
 
                         </div>
@@ -212,16 +213,16 @@ function RegisterPage() {
                         <div className='mt-4 flex  text-xs justify-between'>
                             <div className='flex gap-1'>
                                 <input id="check_agree" className=' border border-black' type="checkbox" />
-                                <label >I agree to all the <Link href="#" className='text-[#FF8682] hover:underline'>Terms</Link> and <Link href="#" className='text-[#FF8682] hover:underline'>Privacy Policies</Link></label>
+                                <label >ฉันยอมรับข้อกำหนด <Link href="#" className='text-[#FF8682] hover:underline'>เงื่อนไข</Link> และ <Link href="#" className='text-[#FF8682] hover:underline'>นโยบายความเป็นส่วนตัว</Link></label>
                             </div>
                         </div>
-                        <button type='submit' className='w-full mt-8 text-white bg-[#2581C1] p-2 rounded-lg'>Create account</button>
+                        <button type='submit' className='w-full mt-8 text-white bg-[#2581C1] p-2 rounded-lg'>สร้างบัญชีของคุณ</button>
                     </form>
-                    <p className='text-center mt-3 text-xs'>Already have an account? <Link href="/login" className='text-[#FF8682] hover:underline'>Login</Link></p>
+                    <p className='text-center mt-3 text-xs'>มีบัญชีอยู่แล้วใช่มั้ย ? <Link href="/login" className='text-[#FF8682] hover:underline'>เข้าสู่ระบบ</Link></p>
                     <div className='relative'>
                         <hr className='mt-14 text-gray-500' />
                         <div className='flex justify-center'>
-                            <p className='bg-white text-gray-500 w-fit p-1 relative  text-xs text-center ' style={{ top: "-.8rem" }}>Or login with</p>
+                            <p className='bg-white text-gray-500 w-fit p-1 relative  text-xs text-center ' style={{ top: "-.8rem" }}>เข้าสู่ระบบด้วย</p>
                         </div>
                     </div>
                     <div className='grid grid-cols-2 gap-2 mt-3'>

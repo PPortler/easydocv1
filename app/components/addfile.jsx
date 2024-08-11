@@ -111,7 +111,7 @@ function Addfile({ cancel, setShowAdd }) {
         setProgress(0)
         setFile(null)
         setStatusLoad(false)
-        alert(`${File.name} has been uploaded`)
+        alert(`${File.name} อัพโหลดสำเร็จ`)
         window.location.reload();
       }
 
@@ -132,7 +132,7 @@ function Addfile({ cancel, setShowAdd }) {
         <div className='fixed top-0 left-0 h-screen w-screen bg-black opacity-50 z-10'></div>
         <div className='fixed top-0 left-0 h-screen w-screen flex justify-center items-center z-20'>
           <div className='bg-white rounded-lg p-4'>
-            <h1 className='font-bold text-lg'>File Upload</h1>
+            <h1 className='font-bold text-lg'>อัพโหลดไฟล์</h1>
             <hr className='my-3' />
             <div id="addfileArea" className={`relative hover:cursor-pointer hover:bg-gray-200 transition-colors border-2 rounded-md ${notFile ? "border-red-500" : "border-[#0F75BC]"}  flex flex-col text-center items-center gap-3 p-10 border-dotted `}>
               <input type="file" ref={inputFileRef} onChange={handleFile} id="input_file" hidden />
@@ -141,35 +141,35 @@ function Addfile({ cancel, setShowAdd }) {
                 fileType === 'pdf' ? (
                   <>
                     <Image className='w-24 h-24' src={'/image/myfile/pdf.png'} height={1000} width={1000} priority alt="upload"></Image>
-                    <p>Upload: {File.name}</p>
+                    <p>อัพโหลด: {File.name}</p>
                     <p>{progress} %</p>
                     <Image onClick={clearFile} className='hover:cursor-pointer absolute top-0 right-0 m-3 w-6 h-6' src="/image/myfile/close_black.png" height={1000} width={1000} priority alt="upload"></Image>
                   </>
                 ) : fileType === 'docx' ? (
                   <>
                     <Image className='w-24 h-24' src={'/image/myfile/doc.png'} height={1000} width={1000} priority alt="upload"></Image>
-                    <p>Upload: {File.name}</p>
+                    <p>อัพโหลด: {File.name}</p>
                     <p>{progress} %</p>
                     <Image onClick={clearFile} className='hover:cursor-pointer absolute top-0 right-0 m-3 w-6 h-6' src="/image/myfile/close_black.png" height={1000} width={1000} priority alt="upload"></Image>
                   </>
                 ) : fileType === 'xlsx' ? (
                   <>
                     <Image className='w-24 h-24' src={'/image/myfile/xlsx.png'} height={1000} width={1000} priority alt="upload"></Image>
-                    <p>{File.name}</p>
+                    <p>อัพโหลด: {File.name}</p>
                     <p>{progress} %</p>
                     <Image onClick={clearFile} className='hover:cursor-pointer absolute top-0 right-0 m-3 w-6 h-6' src="/image/myfile/close_black.png" height={1000} width={1000} priority alt="upload"></Image>
                   </>
                 ) : fileType === 'zip' || fileType === 'rar' ? (
                   <>
                     <Image className='w-24 h-24' src={'/image/myfile/zip.png'} height={1000} width={1000} priority alt="upload"></Image>
-                    <p>Upload: {File.name}</p>
+                    <p>อัพโหลด: {File.name}</p>
                     <p>{progress} %</p>
                     <Image onClick={clearFile} className='hover:cursor-pointer absolute top-0 right-0 m-3 w-6 h-6' src="/image/myfile/close_black.png" height={1000} width={1000} priority alt="upload"></Image>
                   </>
                 ) : (
                   <>
                     <Image className='w-24 h-24' src={ImageFile || '/image/myfile/documents.png'} height={1000} width={1000} priority alt="upload"></Image>
-                    <p>Upload: {File.name}</p>
+                    <p>อัพโหลด: {File.name}</p>
                     <p>{progress} %</p>
                     <Image onClick={clearFile} className='hover:cursor-pointer absolute top-0 right-0 m-3 w-6 h-6' src="/image/myfile/close_black.png" height={1000} width={1000} priority alt="upload"></Image>
                   </>
@@ -177,17 +177,17 @@ function Addfile({ cancel, setShowAdd }) {
               ) : (
                 <>
                   <Image className='w-24 h-24' src="/image/myfile/cloud-computing.png" height={1000} width={1000} priority alt="upload"></Image>
-                  <p className='text-gray-500'>Drop file or click <br /> for upload to your driver.</p>
+                  <p className='text-gray-500'>วางไฟล์หรือคลิก <br /> เพื่ออัพโหลดไปยังไดรเวอร์ของคุณ</p>
                   {notFile && (
-                    <p className='text-red-500'>*Please input yout file.</p>
+                    <p className='text-red-500'>*กรุณาใส่ไฟล์ของคุณ</p>
                   )}
                 </>
               )
               }
             </div>
             <div className='mt-5 flex justify-end gap-3'>
-              <button onClick={cancel} className='rounded-lg p-2 px-3 bg-white border border-gray-200 text-black'>Cancel</button>
-              <button onClick={handleUpload} className='rounded-lg p-2 px-3 bg-[#0F75BC] text-white'>Upload</button>
+              <button onClick={cancel} className='rounded-lg p-2 px-3 bg-white border border-gray-200 text-black'>ยกเลิก</button>
+              <button onClick={handleUpload} className='rounded-lg p-2 px-3 bg-[#0F75BC] text-white'>อัพโหลด</button>
             </div>
           </div>
         </div>

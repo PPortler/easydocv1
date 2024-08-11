@@ -84,11 +84,11 @@ function Navbar({ data }) {
           </Link>
           <Link href="/admin" className=' hover:bg-[#0F75BC] transition-colors w-full flex p-5 py-4 gap-3'>
             <Image className=' w-6 h-6 ' src="/image/myfile/admin_white.png" width={1000} height={1000} alt="icon"></Image>
-            <p>Admin mode</p>
+            <p>โหมดผู้ดูแลระบบ</p>
           </Link>
           <Link href="#" className=' hover:bg-[#0F75BC] transition-colors w-full flex p-5 py-4 gap-3'>
             <Image className=' w-6 h-6 ' src="/image/myfile/gallery.png" width={1000} height={1000} alt="icon"></Image>
-            <p>My File</p>
+            <p>ไฟล์ของฉัน</p>
           </Link>
           {/* <Link href="#" className=' hover:bg-[#0F75BC] transition-colors w-full flex p-5 py-4 gap-3'>
             <Image className=' w-6 h-6 ' src="/image/myfile/notification_white.png" width={1000} height={1000} alt="icon"></Image>
@@ -112,11 +112,11 @@ function Navbar({ data }) {
           </Link> */}
           <Link href="#" className=' hover:bg-[#0F75BC] transition-colors w-full flex p-5 py-4 gap-3'>
             <Image className=' w-6 h-6 ' src="/image/myfile/settings_white.png" width={1000} height={1000} alt="icon"></Image>
-            <p>Setting</p>
+            <p>ตั้งค่า</p>
           </Link>
           <button onClick={() => signOut()} className=' hover:bg-red-500 transition-colors w-full flex p-5 py-4 gap-3'>
             <Image className=' w-6 h-6 ' src="/image/myfile/logout.png" width={1000} height={1000} alt="icon"></Image>
-            <p>Logout</p>
+            <p>ออกจากระบบ</p>
           </button>
 
         </div>

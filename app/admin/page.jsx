@@ -97,8 +97,8 @@ function Admin() {
 
                 <div className='border rounded-md p-5 shadow-md '>
                     <div className='flex justify-between items-center'>
-                        <h1 className='my-3 font-bold text-black'>All Users in Easy Doc</h1>
-                        <Link href="#" className='text-sm text-[#2581C1] hover:underline'>view more ({dataUser.length})</Link>
+                        <h1 className='my-3 font-bold text-black'>ผู้ใช้ทั้งหมดใน Easy Doc</h1>
+                        <Link href="#" className='text-sm text-[#2581C1] hover:underline'>ดูทั้งหมด ({dataUser.length})</Link>
                     </div>
                     <div className='relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1  overflow-y-scroll h-96 shadow-inner'>
                         {dataUser.length > 0 ? (
@@ -108,24 +108,24 @@ function Admin() {
                                         <Image src="/image/myfile/user.png" height={1000}
                                             className='w-10 h-10 rounded-full ' width={1000} priority alt="profile"></Image>
                                         <div className='overflow-hidden w-full grid grid-cols-2 gap-3 lg:grid-cols-4 lg:pe-20'>
-                                            <p className='font-bold '>Email: <br /> <span className='font-thin block overflow-hidden max-w-sx whitespace-nowrap text-ellipsis'>{user.email}</span></p>
-                                            <p className='font-bold '>Name: <br /> <span className='font-thin block overflow-hidden max-w-sx whitespace-nowrap text-ellipsis'>{user.firstName} {user.lastName}</span></p>
-                                            <p className='font-bold '>Phone: <br /> <span className='font-thin block overflow-hidden max-w-sx whitespace-nowrap text-ellipsis'>{user.phone}</span></p>
-                                            <p className='font-bold '>Password: <br /> <span className='font-thin block overflow-hidden max-w-sx whitespace-nowrap text-ellipsis' >{user.password}</span></p>
-                                            <p className='font-bold '>Role: <br /> <span className='font-thin block overflow-hidden max-w-sx whitespace-nowrap text-ellipsis' >{user.role}</span></p>
+                                            <p className='font-bold '>อีเมล: <br /> <span className='font-thin block overflow-hidden max-w-sx whitespace-nowrap text-ellipsis'>{user.email}</span></p>
+                                            <p className='font-bold '>ชื่อ: <br /> <span className='font-thin block overflow-hidden max-w-sx whitespace-nowrap text-ellipsis'>{user.firstName} {user.lastName}</span></p>
+                                            <p className='font-bold '>เบอร์โทรศัพท์: <br /> <span className='font-thin block overflow-hidden max-w-sx whitespace-nowrap text-ellipsis'>{user.phone}</span></p>
+                                            <p className='font-bold '>รหัสผ่าน: <br /> <span className='font-thin block overflow-hidden max-w-sx whitespace-nowrap text-ellipsis' >{user.password}</span></p>
+                                            <p className='font-bold '>บทบาท: <br /> <span className='font-thin block overflow-hidden max-w-sx whitespace-nowrap text-ellipsis' >{user.role}</span></p>
                                         </div>
                                     </div>
                                     <div className='flex gap-1 justify-end mt-5 lg:mt-0'>
-                                        <button className='border rounded-md p-2 px-3 bg-green-500 text-white'>View</button>
-                                        <button className='border rounded-md p-2 px-3 bg-gray-500 text-white'>Edit</button>
-                                        <button onClick={()=>handleShowConfirm(user._id)} className='border rounded-md p-2 px-3 bg-red-500 text-white'>Delete</button>
+                                        <button className='border rounded-md p-2 px-3 bg-green-500 text-white'>ดูเพิ่มเติ่ม</button>
+                                        <button className='border rounded-md p-2 px-3 bg-gray-500 text-white'>แก้ไข</button>
+                                        <button onClick={()=>handleShowConfirm(user._id)} className='border rounded-md p-2 px-3 bg-red-500 text-white'>ลบบัญชี</button>
                                     </div>
                                 </div>
                             ))
                         ) : (
 
                             <div className='p-3 rounded-md bg-gray-100 absolute top-0 left-0 w-full h-full flex justify-center items-center'>
-                                <p className=' w-fit p-2 text-xsrounded-md'>Not User in easy doc.</p>
+                                <p className=' w-fit p-2 text-xsrounded-md'>ไม่มีผู้ใช้งานใน easy doc</p>
                             </div>
                         )}
 
