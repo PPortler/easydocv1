@@ -20,11 +20,15 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.png"/>
+        <title>EasyDoc</title>
+      </head>
       <body className={inter.className}>
         <AuthProvider>
           {children}
         </AuthProvider>
-        </body>
+      </body>
     </html>
   );
 }

@@ -201,6 +201,7 @@ function MyfilePage() {
 
     return (
         <div>
+            <title>MyFile</title>
             <Navbar data={dataUser} />
             <div className='md:flex lg:ms-16'>
 

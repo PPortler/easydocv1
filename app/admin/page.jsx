@@ -92,6 +92,7 @@ function Admin() {
     }, [])
     return (
         <div>
+            <title>Admin</title>
             <NavbarAdmin />
             <div className='size-screen size-container '>
 

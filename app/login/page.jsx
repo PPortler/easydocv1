@@ -94,6 +94,7 @@ function LoginPage() {
     }
     return (
         <div>
+            <title>เข้าสู่ระบบ</title>
             <Navbarlogin />
             <div className='size-container justify-center mx-auto  items-center flex gap-20 '>
                 <div className=' w-10/12 md:w-8/12 lg:w-4/12 flex flex-col justify-between '>

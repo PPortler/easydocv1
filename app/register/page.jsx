@@ -160,6 +160,7 @@ function RegisterPage() {
 
     return (
         <div>
+            <title>ลงทะเบียน</title>
             <Navbarlogin />
             <div className='size-container justify-center mx-auto  items-center flex-row-reverse flex gap-20 '>
                 <div className=' w-10/12 md:w-8/12 xl:w-4/12 lg:w-5/12 flex flex-col justify-between '>

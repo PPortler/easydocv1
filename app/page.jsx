@@ -25,6 +25,7 @@ export default function Home() {
   }, [session], [router])
   return (
     <div>
+      <title>EasyDoc</title>
       <Navbarmain />
       <div className="mt-20 md:mt-36">
         <Maincontent />
