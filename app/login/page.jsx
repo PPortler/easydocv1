@@ -9,6 +9,7 @@ import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Loader from '../components/loader'
+import Swal from 'sweetalert2'
 
 function LoginPage() {
 
@@ -38,7 +39,7 @@ function LoginPage() {
         e.preventDefault();
         setStatusLoad(true)
 
-        if(!email || !password){
+        if (!email || !password) {
             setError("กรุณากรอก อีเมลและรหัสผ่าน ของคุณ")
             setStatusLoad(false);
             return;
@@ -77,6 +78,7 @@ function LoginPage() {
                         setStatusLoad(false)
                         return;
                     }
+                    
 
                 } catch (err) {
                     setStatusLoad(false);
@@ -85,8 +87,14 @@ function LoginPage() {
 
 
             }
+
+            Swal.fire({
+                title: 'เข้าสู่ระบบสำเร็จ',
+                text: 'ยินดีต้อนรับเข้าสู่ระบบ',
+                icon: 'success',
+                confirmButtonText: 'ตกลง'
+            })
             setCheckPassword('pass');
-            alert('เข้าสู่ระบบสำเร็จ')
             router.replace('/myfile')
         } catch (err) {
             console.log(err);
@@ -102,11 +110,11 @@ function LoginPage() {
                     <p className='text-gray-500 text-xs mt-2'>เข้าสู่ระบบเพื่อเข้าถึงบัญชี easy doc ของคุณ</p>
                     <form onSubmit={handleSubmit} className='mt-7'>
                         <div className='relative'>
-                            <input onChange={(e) => setEmail(e.target.value)} className={`${checkEmail === 'pass'? " border-green-500":checkEmail === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-md`} type="text" placeholder='กรอกอีเมลของคุณ' />
+                            <input onChange={(e) => setEmail(e.target.value)} className={`${checkEmail === 'pass' ? " border-green-500" : checkEmail === 'wrong' ? "border-red-500" : ""} px-3 w-full border p-2 rounded-md`} type="text" placeholder='กรอกอีเมลของคุณ' />
                             <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>อีเมล</span>
                         </div>
                         <div className='mt-4 relative'>
-                            <input onChange={(e) => setPassword(e.target.value)} className={`${checkPassword === 'wrong'? "border-red-500":""} px-3 w-full border p-2 rounded-md`} type="password" placeholder='กรอกรหัสผ่านของคุณ' />
+                            <input onChange={(e) => setPassword(e.target.value)} className={`${checkPassword === 'wrong' ? "border-red-500" : ""} px-3 w-full border p-2 rounded-md`} type="password" placeholder='กรอกรหัสผ่านของคุณ' />
                             <span className='absolute left-2 text-xs text-gray-500 bg-white px-1' style={{ top: "-.5rem" }}>รหัสผ่าน</span>
                         </div>
                         {error && (

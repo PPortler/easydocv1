@@ -10,6 +10,8 @@ import Image from 'next/image'
 import Addfile from '../components/addfile'
 import Loader from '../components/loader'
 import Confirm from '../components/confirm'
+import Swal from 'sweetalert2'
+
 
 function MyfilePage() {
 
@@ -155,7 +157,7 @@ function MyfilePage() {
     const [idFileDelete, setIdFileDelete] = useState('');
     const [FileDeleteName, setFileDeleteName] = useState('');
 
-    function showDotFile(id,e) {
+    function showDotFile(id, e) {
         e.preventDefault();
         setIdFileDot(prevId => prevId === id ? '' : id);
     }
@@ -165,7 +167,34 @@ function MyfilePage() {
     function ShowDeleteFile(id, name) {
         setIdFileDelete(id)
         setFileDeleteName(name)
-        setShowConfirm(true)
+
+        Swal.fire({
+            title: `คุณต้องการลบ "${name}" ?`,
+            icon: "error",
+            showDenyButton: true,
+            confirmButtonText: "ลบ",
+            confirmButtonColor: "#ff4545",
+            denyButtonText: 'ยกเลิก',
+            denyButtonColor: "grey",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                handleConfirmDelete(id);
+                Swal.fire({
+                    title: "ลบสำเร็จ",
+                    text: "ไฟล์ของคุณถูกลบแล้ว",
+                    icon: "success",
+                    confirmButtonText: "ตกลง",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload()
+                    }
+                });
+
+            } else {
+                handleCancelConfirm();
+            }
+        });
+
         document.body.classList.add('no_scroll');
     }
 
@@ -177,10 +206,11 @@ function MyfilePage() {
         document.body.classList.remove('no_scroll');
     }
 
-    async function handleConfirmDelete() {
+    async function handleConfirmDelete(id) {
+        console.log(id);
         setStatusLoad(true)
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/upload/${idFileDelete}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/upload/${id}`, {
                 method: "DELETE"
             })
 
@@ -192,7 +222,7 @@ function MyfilePage() {
             }
 
             handleCancelConfirm();
-            window.location.reload();
+
 
         } catch (err) {
             console.log(err);
@@ -267,7 +297,7 @@ function MyfilePage() {
                                                         <p className=' whitespace-nowrap overflow-hidden text-ellipsis text-sm'>{d.fileName}</p>
 
                                                         <div className={`absolute right-0 ${styleMenu === 'block' ? "" : "hidden"}`}>
-                                                            <Image onClick={(e) => showDotFile(d._id,e)} className={`w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                            <Image onClick={(e) => showDotFile(d._id, e)} className={`w-6 h-6  `} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
                                                             <div className={`${idFileDot === d._id ? "block" : "hidden"} border bg-white absolute top-6 shadow-2xl z-10`}>
                                                                 <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>ดู</button>
                                                                 <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>ดาวน์โหลด</button>
@@ -277,7 +307,7 @@ function MyfilePage() {
                                                     </div>
                                                 </div>
                                                 <div className={`${styleMenu === 'block' ? "hidden" : ""} relative `}>
-                                                    <Image onClick={(e) => showDotFile(d._id,e)} className={`hover:cursor-pointer w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
+                                                    <Image onClick={(e) => showDotFile(d._id, e)} className={`hover:cursor-pointer w-6 h-6`} src="/image/myfile/dot.png" height={1000} width={1000} priority alt="icon"></Image>
                                                     <div className={`${idFileDot === d._id ? "block" : "hidden"} border bg-white absolute top-6 shadow-xl z-10`}>
                                                         <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>ดู</button>
                                                         <button className='hover:cursor-pointer hover:bg-gray-200 p-1 px-2 text-sm w-full'>ดาวน์โหลด</button>

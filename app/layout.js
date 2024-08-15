@@ -23,6 +23,7 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="icon" href="/favicon.png"/>
         <title>EasyDoc</title>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       </head>
       <body className={inter.className}>
         <AuthProvider>

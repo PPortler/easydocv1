@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Loader from '../components/loader'
+import Swal from 'sweetalert2'
 
 function RegisterPage() {
 
@@ -149,7 +150,12 @@ function RegisterPage() {
             })
 
             if (res.ok) {
-                alert("Register success")
+                Swal.fire({
+                    title: 'ลงทะเบียนสำเร็จ',
+                    text: 'กรุณาเข้าสู่ระบบอีกครั้งเพื่อเข้าใช้งาน',
+                    icon: 'success',
+                    confirmButtonText: 'ตกลง'
+                })
                 router.push('/login');
             }
         } catch (err) {

@@ -7,6 +7,8 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import Loader from '../components/loader'
 import Confirm from '../components/confirm'
+import Swal from 'sweetalert2'
+
 
 function Admin() {
 
@@ -17,7 +19,7 @@ function Admin() {
 
 
     const [dataUser, setDataUser] = useState([])
-    const [idNameUser,setIdNameUser] = useState('');
+    const [idNameUser, setIdNameUser] = useState('');
 
     async function getDataUser() {
         try {
@@ -40,29 +42,44 @@ function Admin() {
     const [showConfirm, setShowConfirm] = useState(false);
     const [userID, setUserID] = useState('');
 
-    useEffect(()=>{
-        if(showConfirm){
+    useEffect(() => {
+        if (showConfirm) {
             document.body.classList.add('no_scroll');
-        }else{
+        } else {
             document.body.classList.remove('no_scroll');
         }
-    },[showConfirm])
-    
+    }, [showConfirm])
+
     function handleShowConfirm(id) {
         const tempName = dataUser.find(data => data._id === id);
-        if(tempName){
+        if (tempName) {
             setIdNameUser(tempName.email);
         }
         setUserID(id)
-        setShowConfirm(true);
+        Swal.fire({
+            title: `คุณแน่ใจที่จะลบบัญชี "${tempName.email}"?`,
+            showDenyButton: true,
+            confirmButtonText: "ลบบัญชี",
+            confirmButtonColor: "#ff4545",
+            denyButtonText: `ยกเลิก`,
+            denyButtonColor: 'grey',
+            icon: "error",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                handleConfirm(id);
+            } else {
+                handleCancel();
+            }
+        });
     }
     function handleCancel() {
         setShowConfirm(false);
         setStatusLoad(false)
     }
-    function handleConfirm() {
+    function handleConfirm(id) {
+
         setStatusLoad(true)
-        DeleteUser(userID)
+        DeleteUser(id)
         setShowConfirm(false);
     }
 
@@ -73,14 +90,38 @@ function Admin() {
             })
 
             if (!res.ok) {
-                alert("faile");
+                Swal.fire({
+                    title: 'ล้มเหลว',
+                    text: 'ลบบัญชีไม่สำเร็จ',
+                    icon: 'error',
+                    confirmButtonText: 'Cool'
+                })
                 handleCancel();
                 throw new Error("Error fetch api delete user");
             }
 
-            handleCancel();
-            window.location.reload();
+            Swal.fire({
+                title: 'สำเร็จ',
+                text: 'ลบบัญชีสำเร็จ',
+                icon: 'success',
+                confirmButtonText: 'Cool'
+            }).then((result => {
+                if (result.isConfirmed) {
+                    handleCancel();
+                    window.location.reload();
+                } else {
+                    handleCancel();
+                    window.location.reload();
+                }
+            }))
+
         } catch (err) {
+            Swal.fire({
+                title: 'ล้มเหลว',
+                text: 'ลบบัญชีไม่สำเร็จ',
+                icon: 'error',
+                confirmButtonText: 'Cool'
+            })
             console.log(err);
         }
 
@@ -119,7 +160,7 @@ function Admin() {
                                     <div className='flex gap-1 justify-end mt-5 lg:mt-0'>
                                         <button className='border rounded-md p-2 px-3 bg-green-500 text-white'>ดูเพิ่มเติ่ม</button>
                                         <button className='border rounded-md p-2 px-3 bg-gray-500 text-white'>แก้ไข</button>
-                                        <button onClick={()=>handleShowConfirm(user._id)} className='border rounded-md p-2 px-3 bg-red-500 text-white'>ลบบัญชี</button>
+                                        <button onClick={() => handleShowConfirm(user._id)} className='border rounded-md p-2 px-3 bg-red-500 text-white'>ลบบัญชี</button>
                                     </div>
                                 </div>
                             ))
@@ -134,9 +175,9 @@ function Admin() {
 
                 </div>
             </div>
-            <div id="loader" style={{opacity: statusLoad ? "1" : "0", display: statusLoad ? "":"none"}}>
+            <div id="loader" style={{ opacity: statusLoad ? "1" : "0", display: statusLoad ? "" : "none" }}>
                 <Loader />
-            </div> 
+            </div>
 
             {showConfirm ? (
                 <>
@@ -144,7 +185,7 @@ function Admin() {
                         title={`${idNameUser}`}
                         cancel={handleCancel}
                         confirm={handleConfirm}
-                        role= "delete"
+                        role="delete"
                     />
                 </>
             ) : null}

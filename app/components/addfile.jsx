@@ -7,6 +7,8 @@ import { storage } from '../firebaseConfig';
 import { useSession } from 'next-auth/react';
 import Loader from './loader';
 import Alert from './alert';
+import Swal from 'sweetalert2'
+
 
 function Addfile({ cancel, setShowAdd }) {
 
@@ -41,7 +43,7 @@ function Addfile({ cancel, setShowAdd }) {
 
     setFile(e.target.files[0])
     const files = e.target.files[0];
-    if(!files) return;
+    if (!files) return;
     const type = files.name.split('.').pop();
     if (files) {
       setImageFile(URL.createObjectURL(files));
@@ -106,13 +108,48 @@ function Addfile({ cancel, setShowAdd }) {
         body: JSON.stringify({ fileName: File.name, fileURL: url, fileType: fileType })
       })
       if (res.ok) {
-        setShowAdd(false)
-        setImageFile('')
-        setProgress(0)
-        setFile(null)
         setStatusLoad(false)
-        alert(`${File.name} อัพโหลดสำเร็จ`)
-        window.location.reload();
+        setShowAdd(false)
+        Swal.fire({
+          title: 'อัพโหลดสำรเร็จ',
+          text: `ไฟล์ "${File.name}" ถูกอัพโหลดแล้ว `,
+          icon: 'success',
+          confirmButtonText: 'ตกลง'
+        }).then((result) => {
+          if (result.confirmButtonText) {
+            setImageFile('')
+            setProgress(0)
+            setFile(null)
+            window.location.reload();
+          }else{
+            
+            setImageFile('')
+            setProgress(0)
+            setFile(null)
+            window.location.reload();
+          }
+        });
+      }else{
+        setStatusLoad(false)
+        setShowAdd(false)
+        Swal.fire({
+          title: 'อัพโหลดไม่สำเร็จ',
+          text: `เกิดข้อผิดพลาดกรุณาลองใหม้ในภายกลัง`,
+          icon: 'error',
+          confirmButtonText: 'ตกลง'
+        }).then((result) => {
+          if (result.confirmButtonText) {
+            setImageFile('')
+            setProgress(0)
+            setFile(null)
+            window.location.reload();
+          }else{
+            setImageFile('')
+            setProgress(0)
+            setFile(null)
+            window.location.reload();
+          }
+        });
       }
 
     } catch (err) {
