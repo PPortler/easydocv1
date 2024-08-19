@@ -16,17 +16,26 @@ import Swal from 'sweetalert2'
 function MyfilePage() {
 
     const [statusLoad, setStatusLoad] = useState(true)
-    useEffect(() => {
-        setStatusLoad(false)
-    }, [])
 
-    const { data: session } = useSession();
+
+    const { status, data: session } = useSession();
     const router = useRouter();
 
     useEffect(() => {
+        if (status === 'loading') {
+            return;
+        }
+
         if (!session) {
             router.replace('/login')
+        } else {
+            setStatusLoad(false)
         };
+
+        if (session?.user?.email) {
+            getUser(session?.user?.email);
+            getFile(session?.user?.email);
+        }
     }, [session])
 
     const [dataUser, setDataUser] = useState([]);
@@ -34,17 +43,8 @@ function MyfilePage() {
 
     const [styleMenu, setStyleMenu] = useState('span')
 
-
-    useEffect(() => {
-        if (session?.user?.email) {
-            getUser(session?.user?.email);
-            getFile(session?.user?.email);
-        }
-
-
-    }, [])
-
     async function getFile(email) {
+
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/api/upload/${email}`, {
                 method: "GET",
@@ -63,6 +63,7 @@ function MyfilePage() {
             console.log("Error fetch api myfilePage", err);
         }
     }
+
 
     async function getUser(email) {
         try {

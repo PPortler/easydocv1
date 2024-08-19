@@ -3,32 +3,37 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { connectDB } from "@/lib/database";
 import Users from "@/models/user";
 import bcrypt from "bcryptjs/dist/bcrypt";
+import GoogleProvider from "next-auth/providers/google";
 
 const authOption = {
     providers: [
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET
+        }),
         CredentialsProvider({
             name: 'credentials',
             credentials: {},
-            async authorize(credentials, req){
-                const { email,password } = credentials;
+            async authorize(credentials, req) {
+                const { email, password } = credentials;
 
-                try{
+                try {
                     await connectDB();
                     const user = await Users.findOne({ email });
 
-                    if(!user){
+                    if (!user) {
                         return null;
                     }
 
-                    const passwordMatch = await bcrypt.compare(password,user.password);
+                    const passwordMatch = await bcrypt.compare(password, user.password);
 
-                    if(!passwordMatch){
+                    if (!passwordMatch) {
                         return null;
                     }
 
                     return user;
 
-                }catch(err){
+                } catch (err) {
                     console.log(err)
                 }
             }
@@ -38,7 +43,7 @@ const authOption = {
         strategy: "jwt",
     },
     secret: process.env.NEXTAUTH_SECRET,
-    page:{
+    page: {
         signIn: "/login"
     }
 }

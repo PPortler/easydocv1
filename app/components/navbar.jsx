@@ -7,8 +7,11 @@ import style from './styles/navbar.module.css'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 
 function Navbar({ data }) {
+
+  const { data: session } = useSession();
 
   const [checkSlider, setCheckSlider] = useState(false);
 
@@ -37,7 +40,7 @@ function Navbar({ data }) {
         </div>
         <div className='mt-5 flex flex-col items-center '>
           <Link href="/myfile" className=' transition-colors w-full flex justify-center p-3 py-4'>
-            <Image className=' w-6 h-6 ' src="/image/myfile/user.png" width={1000} height={1000} alt="icon"></Image>
+            <Image className=' w-6 h-6 rounded-full' src={session?.user?.image} width={1000} height={1000} alt="icon"></Image>
           </Link>
           <Link href="/admin" className='hover:bg-[#0F75BC] transition-colors w-full flex justify-center p-3 py-4'>
             <Image className=' w-6 h-6 ' src="/image/myfile/admin_white.png" width={1000} height={1000} alt="icon"></Image>
@@ -78,10 +81,17 @@ function Navbar({ data }) {
           </div>
         </div>
         <div className=' flex flex-col items-center '>
-          <Link href="#" className=' transition-colors w-full flex p-5 py-4 gap-3'>
-            <Image className=' w-6 h-6 ' src="/image/myfile/user.png" width={1000} height={1000} alt="icon"></Image>
-            <p className='text-ellipsis overflow-hidden whitespace-nowrap'>{data.firstName} {data.lastName}</p>
-          </Link>
+          {session?.user?.email ? (
+            <Link href="#" className=' transition-colors w-full flex p-5 py-4 gap-3'>
+              <Image className=' w-6 h-6 rounded-full' src={`${session?.user?.image}`} width={1000} height={1000} alt="icon"></Image>
+              <p className='text-ellipsis overflow-hidden whitespace-nowrap'>{session?.user?.name}</p>
+            </Link>
+          ) : (
+            <Link href="#" className=' transition-colors w-full flex p-5 py-4 gap-3'>
+              <Image className=' w-6 h-6 rounded-full' src="/image/myfile/user.png" width={1000} height={1000} alt="icon"></Image>
+              <p className='text-ellipsis overflow-hidden whitespace-nowrap'>{data.firstName} {data.lastName}</p>
+            </Link>
+          )}
           <Link href="/admin" className=' hover:bg-[#0F75BC] transition-colors w-full flex p-5 py-4 gap-3'>
             <Image className=' w-6 h-6 ' src="/image/myfile/admin_white.png" width={1000} height={1000} alt="icon"></Image>
             <p>โหมดผู้ดูแลระบบ</p>
