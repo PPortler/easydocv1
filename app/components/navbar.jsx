@@ -39,9 +39,15 @@ function Navbar({ data }) {
           </div>
         </div>
         <div className='mt-5 flex flex-col items-center '>
-          <Link href="/myfile" className=' transition-colors w-full flex justify-center p-3 py-4'>
-            <Image className=' w-6 h-6 rounded-full' src={session?.user?.image} width={1000} height={1000} alt="icon"></Image>
-          </Link>
+          {session?.user?.email && !data ? (
+            <Link href="/myfile" className=' transition-colors w-full flex justify-center p-3 py-4'>
+              <Image className=' w-6 h-6 rounded-full' src={session?.user?.image} width={1000} height={1000} alt="icon"></Image>
+            </Link>
+          ) : (
+            <Link href="/myfile" className=' transition-colors w-full flex justify-center p-3 py-4'>
+              <Image className=' w-6 h-6 rounded-full' src="/image/myfile/user.png" width={1000} height={1000} alt="icon"></Image>
+            </Link>
+          )}
           <Link href="/admin" className='hover:bg-[#0F75BC] transition-colors w-full flex justify-center p-3 py-4'>
             <Image className=' w-6 h-6 ' src="/image/myfile/admin_white.png" width={1000} height={1000} alt="icon"></Image>
           </Link>
@@ -81,7 +87,7 @@ function Navbar({ data }) {
           </div>
         </div>
         <div className=' flex flex-col items-center '>
-          {session?.user?.email ? (
+          {session?.user?.email && !data ? (
             <Link href="#" className=' transition-colors w-full flex p-5 py-4 gap-3'>
               <Image className=' w-6 h-6 rounded-full' src={`${session?.user?.image}`} width={1000} height={1000} alt="icon"></Image>
               <p className='text-ellipsis overflow-hidden whitespace-nowrap'>{session?.user?.name}</p>
